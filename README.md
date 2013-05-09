@@ -1,4 +1,4 @@
-# Ruby::Ece
+# Escenic::API
 
 TODO: Write a gem description
 
