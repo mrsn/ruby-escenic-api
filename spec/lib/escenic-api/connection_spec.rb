@@ -32,6 +32,18 @@ describe Escenic::API::Connection do
       response.should be_an_instance_of( String )
     end
 
+    it 'returns a parsed response when the response is a 201' do
+      body = mock :code => 201, :body => 'I am a string'
+      response = @connection.request { body }
+      response.should be_an_instance_of( String )
+    end
+
+    it 'returns a parsed response when the response is a 204' do
+      body = mock :code => 204, :body => 'I am a string'
+      response = @connection.request { body }
+      response.should be_an_instance_of( String )
+    end
+
     it 'returns a Escenic::API::Error::Unauthorized when the response is 401' do
       body = mock :code => 401, :body => 'I am a string'
       lambda do
