@@ -1,5 +1,5 @@
 # Escenic::API
-[![Build Status](https://travis-ci.org/toddedw/escenic-api.png)](https://travis-ci.org/toddedw/escenic-api)
+[![Build Status](https://travis-ci.org/toddedw/ruby-escenic-api.png)](https://travis-ci.org/toddedw/ruby-escenic-api)
 
 TODO: Write a gem description
 
