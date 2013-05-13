@@ -4,7 +4,7 @@ module Escenic
 
       module Requests
 
-        def request
+        def request(options = {})
           response = yield
           raise Escenic::API::Error::ConnectionFailed if !response
           status = response.code.to_i
@@ -32,11 +32,12 @@ module Escenic
           req = Net::HTTP::Get.new("#{uri.path}?#{uri.query}")
           req.basic_auth @user, @pass
 
-          response = Net::HTTP.start(uri.host, uri.port) do |http|
-            http.request(req)
+          request do
+            Net::HTTP.start(uri.host, uri.port) do |http|
+              http.request(req)
+            end
           end
 
-          response
         end
 
         def delete(url, options = {})
@@ -44,11 +45,11 @@ module Escenic
           req = Net::HTTP::Delete.new("#{uri.path}?#{uri.query}")
           req.basic_auth @user, @pass
 
-          response = Net::HTTP.start(uri.host, uri.port) do |http|
-            http.request(req)
+          request do
+            Net::HTTP.start(uri.host, uri.port) do |http|
+              http.request(req)
+            end
           end
-
-          response
         end
 
         def post(url, options = {})
@@ -59,11 +60,12 @@ module Escenic
           body = options[:body]
           req['Content-type'] = options[:type] ?
             options[:type] : req['Content-type'] = 'application/atom+xml'
-          response = Net::HTTP.start(uri.host, uri.port) do |http|
-            http.request(req, body)
-          end
 
-          response
+          request do
+            Net::HTTP.start(uri.host, uri.port) do |http|
+              http.request(req, body)
+            end
+          end
         end
 
         def put(url, options = {})
@@ -73,13 +75,12 @@ module Escenic
           body = options[:body]
           req['Content-type'] = options[:type] ?
               options[:type] : req['Content-type'] = 'application/atom+xml'
-          response = Net::HTTP.start(uri.host, uri.port) do |http|
-            http.request(req, body)
+          request do
+            Net::HTTP.start(uri.host, uri.port) do |http|
+              http.request(req, body)
+            end
           end
-
-          response
         end
-
 
       end
 
