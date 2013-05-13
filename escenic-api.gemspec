@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "escenic-api"
   spec.version       = Escenic::API::VERSION
   spec.authors       = ["Todd Edwards"]
-  spec.email         = ["todd@mtn.cc"]
+  spec.email         = ["automation@mcclatchyinteractive.com"]
   spec.description   = "A Ruby client for the Escenic API"
   spec.summary       = "Provide Ruby applications communication capabilities with the Escenic API"
   spec.homepage      = "http://www.github.com/toddedw/escenic-api"
