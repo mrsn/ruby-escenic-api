@@ -5,7 +5,9 @@ module Escenic
 
     class Connection
       include Escenic::API::Connection::Requests
+
       attr_accessor :endpoint
+
       def initialize()
         raise Escenic::API::Error if
             Escenic::API::Config.user.nil? ||

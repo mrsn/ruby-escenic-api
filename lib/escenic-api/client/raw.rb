@@ -7,7 +7,6 @@ module Escenic
 
       def initialize(options = {})
         @connection = options[:connection]
-        @endpoint = Escenic::API::Config.endpoint
       end
 
       def self.add_method(method, action, options = {})
@@ -18,16 +17,14 @@ module Escenic
         STR
       end
 
-      def request(method, action, data = {})
-        url = @endpoint + action
-        action.sub! ':id', data.delete(:id) if action.match ':id'
-        connection.send(method, url)
+      def request(method, action, options = {})
+        url = Escenic::API::Config.endpoint + action
+        action.sub! ':id', options.delete(:id) if action.match ':id'
+        connection.send(method, url, options)
       end
 
-      add_method :post, '/section', as: 'create_section'
-      add_method :get, "/section/:id", as: 'section'
-      add_method :get, "/section/:id/subsections", as: 'subsections'
-
+      add_method :get,  '/section/:id', as: 'get_section'
+      add_method :post, '/section',     as: 'create_section'
     end
 
   end
