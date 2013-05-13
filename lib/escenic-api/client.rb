@@ -11,18 +11,16 @@ module Escenic
         @raw        = Escenic::API::Raw.new :connection => @connection
       end
 
-      def section(action, options = {})
-        case action
-          when :create
-            response = raw.create_section(options)
-            Escenic::API::Section.init(response, self)
-          when :get
-            puts options
-            Escenic::API::Section.init(self.raw.section(options), self)
-          else
-            raise "Action not defined: #{action}"
-        end
+      def section(options = {})
+        if options[:id].nil?
+          options[:name].nil? raise Escenic::API::Error("Section name required")
+          options[:unique_name].nil? raise Escenic::API::Error("Unique name required")
+          options[:directory].nil? raise Escenic::API::Error("Directory name required")
 
+        else
+          response = self.raw.get_section(:id => options[:id])
+          Escenic::API::Section.init(response, client)
+        end
       end
 
     end

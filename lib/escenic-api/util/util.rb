@@ -7,8 +7,7 @@ module Escenic
       class << self
 
         def create_section_payload(data = {})
-          default_parent = Escenic::API::Section.new.subsections('ROOT')
-
+          #default_parent = Escenic::API::Section.new.subsections('ROOT')
           #Nokogiri::XML::Reader(default_parent).each do |node|
           #  node.inspect
           #end
@@ -17,6 +16,7 @@ module Escenic
               parent_title: 'Home',
               parent_id: '4'
           }
+
           builder = Nokogiri::XML::Builder.new do |xml|
             xml.entry(
                 xmlns: 'http://www.w3.org/2005/Atom',

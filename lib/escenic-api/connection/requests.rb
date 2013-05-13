@@ -26,7 +26,7 @@ module Escenic
           end
         end
 
-        def get(url)
+        def get(url, options = {})
 
           uri = URI.parse(url)
           req = Net::HTTP::Get.new("#{uri.path}?#{uri.query}")
@@ -39,7 +39,7 @@ module Escenic
           response
         end
 
-        def delete(url)
+        def delete(url, options = {})
           uri = URI.parse(url)
           req = Net::HTTP::Delete.new("#{uri.path}?#{uri.query}")
           req.basic_auth @user, @pass
@@ -57,11 +57,8 @@ module Escenic
           req.basic_auth @user, @pass
 
           body = options[:body]
-          if options[:type]
-            req['Content-type'] = options[:type]
-          else
-            req['Content-type'] = 'application/atom+xml'
-          end
+          req['Content-type'] = options[:type] ?
+            options[:type] : req['Content-type'] = 'application/atom+xml'
           response = Net::HTTP.start(uri.host, uri.port) do |http|
             http.request(req, body)
           end
@@ -74,11 +71,8 @@ module Escenic
           req = Net::HTTP::Put.new("#{uri.path}?#{uri.query}")
           req.basic_auth @user, @pass
           body = options[:body]
-          if options[:type]
-            req['Content-type'] = options[:type]
-          else
-            req['Content-type'] = 'application/atom+xml'
-          end
+          req['Content-type'] = options[:type] ?
+              options[:type] : req['Content-type'] = 'application/atom+xml'
           response = Net::HTTP.start(uri.host, uri.port) do |http|
             http.request(req, body)
           end

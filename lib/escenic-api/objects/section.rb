@@ -3,7 +3,13 @@ module Escenic
 
     class Section < Escenic::API::Object
 
+      def update
 
+      end
+
+      def delete
+
+      end
 
     end
 

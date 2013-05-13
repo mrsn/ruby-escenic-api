@@ -100,7 +100,7 @@ describe Escenic::API::Connection do
       pass = Escenic::API::Config.pass
       stub_request(:get, "http://#{user}:#{pass}@www.example.com/?").
           with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-          to_return(:status => 200, :body => "", :headers => {})
+          to_return(:status => 200, :body => SECTION_XML, :headers => {})
       response = @connection.get('http://www.example.com')
       response.should be_an_instance_of( Net::HTTPOK )
     end
