@@ -30,7 +30,11 @@ module Escenic
           when 500..599
             raise Escenic::API::Error::ServerError
           else
-            Hash.from_xml(response.body)
+            if response.body
+              Hash.from_xml(response.body)
+            else
+              response
+            end
         end
       end
 
