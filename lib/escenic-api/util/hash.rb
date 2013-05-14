@@ -11,7 +11,7 @@ class Hash
         result = Nokogiri::XML(xml_io)
         return { result.root.name.to_sym => xml_node_to_hash(result.root)}
       rescue Exception => e
-        raise Escenic::API::Error('Unable to convert XML to a hash')
+        raise Escenic::API::Error.new('Unable to convert XML to a hash')
       end
     end
 

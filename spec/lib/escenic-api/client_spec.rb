@@ -13,4 +13,13 @@ describe Escenic::API::Client do
     end
   end
 
+  describe '#section' do
+    it 'should be an instance of Escenic::API::Section' do
+      stub_request(:get, "http://mockuser:mockpass@www.example.com/section/:id?").
+          with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
+          to_return(:status => 200, :body => SECTION_XML, :headers => {})
+      @client.section( { id: '102' } )
+    end
+  end
+
 end
