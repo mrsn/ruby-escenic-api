@@ -5,6 +5,4 @@ gemspec
 
 gem 'rake'
 gem 'rspec'
-gem 'simplecov'
-gem 'webmock'
 gem 'json', '~> 1.7.7'

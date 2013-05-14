@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "escenic-api"
   spec.version       = Escenic::API::VERSION
   spec.authors       = ["Todd Edwards"]
-  spec.email         = ["todd@mtn.cc"]
+  spec.email         = ["automation@mcclatchyinteractive.com"]
   spec.description   = "A Ruby client for the Escenic API"
   spec.summary       = "Provide Ruby applications communication capabilities with the Escenic API"
   spec.homepage      = "http://www.github.com/toddedw/escenic-api"
@@ -18,6 +18,10 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "nokogiri"
+  spec.add_dependency "hashie"
   spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "simplecov"
+  spec.add_development_dependency "webmock"
   spec.add_development_dependency "rake"
 end
