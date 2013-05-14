@@ -23,12 +23,10 @@ module Escenic
             options[:unique_name].nil?  ||
             options[:directory].nil?
         # Create payload *pending*
-        payload = Escenic::API::Payload.new(options, client)
-
-
+        payload = Escenic::API::SectionPayload.new(options, client)
         # Create the section
-        response = client.raw.create_section(payload)
-        instance = self.new(response)
+        response = client.raw.create_section(body: payload)
+        instance = self.init(id: response)
         instance.client = client
         instance
       end
