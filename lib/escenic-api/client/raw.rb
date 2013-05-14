@@ -2,10 +2,11 @@ module Escenic
   module API
 
     class Raw
-      attr_accessor :connection
+      attr_accessor :connection, :endpoint
 
-      def initialize(options = {})
+      def initialize(options = {}, client)
         @connection = Escenic::API::Connection.new
+        @endpoint = client.endpoint
       end
 
       def self.add_method(method, action, options = {})
@@ -18,7 +19,7 @@ module Escenic
 
       def request(method, action, options = {})
         action.sub! ':id', options.delete(:id) if action.match ':id'
-        url = Escenic::API::Config.endpoint + action
+        url = self.endpoint + action
         connection.send(method, url, options)
       end
 

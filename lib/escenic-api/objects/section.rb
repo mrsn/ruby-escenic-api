@@ -6,7 +6,7 @@ module Escenic
       def self.init(options={}, client)
         if options[:id].nil?
           # Try to create a section.
-          self.create(options={}, client)
+          self.create(options, client)
         elsif options[:id] && options.count == 1
           # Try to retrieve a section.
           response = client.raw.get_section(:id => options[:id])
@@ -23,6 +23,8 @@ module Escenic
             options[:unique_name].nil?  ||
             options[:directory].nil?
         # Create payload *pending*
+        payload = Escenic::API::Payload.new(options, client)
+
 
         # Create the section
         response = client.raw.create_section(payload)
