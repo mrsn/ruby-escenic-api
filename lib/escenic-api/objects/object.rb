@@ -5,8 +5,7 @@ module Escenic
       attr_accessor :client
 
       def self.init(response, client)
-        hashish  = Hash.from_xml(response)
-        instance = self.new(hashish)
+        instance = self.new(response)
         instance.client = client
         instance
       end

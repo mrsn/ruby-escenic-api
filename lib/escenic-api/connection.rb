@@ -1,21 +1,94 @@
-require 'escenic-api/connection/requests'
-
 module Escenic
   module API
 
     class Connection
-      include Escenic::API::Connection::Requests
 
-      attr_accessor :endpoint
+      def initialize
+        raise Escenic::API::Error::Config if
+          Escenic::API::Config.user.nil?    ||
+          Escenic::API::Config.pass.nil?    ||
+          Escenic::API::Config.endpoint.nil?
+      end
 
-      def initialize()
-        raise Escenic::API::Error if
-            Escenic::API::Config.user.nil? ||
-                Escenic::API::Config.pass.nil? ||
-                Escenic::API::Config.endpoint.nil?
-        @user     = Escenic::API::Config.user
-        @pass     = Escenic::API::Config.pass
-        @endpoint = Escenic::API::Config.endpoint
+      def request(options = {})
+        response = yield
+        raise Escenic::API::Error::ConnectionFailed if !response
+        status = response.code.to_i
+        case status
+          when 401
+            raise Escenic::API::Error::Unauthorized
+          when 403
+            #TODO Parse response and display useful message.
+            raise Escenic::API::Error::Forbidden.new(response.body)
+          when 404
+            raise Escenic::API::Error::NotFound
+          when 400, 406
+            #TODO Parse response and display useful message.
+            raise Escenic::API::Error.new(response.body)
+          when 300..399
+            raise Escenic::API::Error::Redirect
+          when 500..599
+            raise Escenic::API::Error::ServerError
+          else
+            Hash.from_xml(response.body)
+        end
+      end
+
+      def get(url, options = {})
+
+        uri = URI.parse(url)
+        req = Net::HTTP::Get.new("#{uri.path}?#{uri.query}")
+        req.basic_auth  Escenic::API::Config.user, Escenic::API::Config.pass
+
+        request do
+          Net::HTTP.start(uri.host, uri.port) do |http|
+            http.request(req)
+          end
+        end
+      end
+
+      def delete(url, options = {})
+        uri = URI.parse(url)
+        req = Net::HTTP::Delete.new("#{uri.path}?#{uri.query}")
+        req.basic_auth Escenic::API::Config.user, Escenic::API::Config.pass
+
+        request do
+          Net::HTTP.start(uri.host, uri.port) do |http|
+            http.request(req)
+          end
+        end
+      end
+
+      def post(url, options = {})
+        uri = URI.parse(url)
+        req = Net::HTTP::Post.new("#{uri.path}?#{uri.query}")
+        req.basic_auth Escenic::API::Config.user, Escenic::API::Config.pass
+
+        body = options[:body]
+        req['Content-type'] = options[:type] ?
+            options[:type] : req['Content-type'] = 'application/atom+xml'
+
+        request do
+          Net::HTTP.start(uri.host, uri.port) do |http|
+            http.request(req, body)
+          end
+        end
+      end
+
+      def put(url, options = {})
+        uri = URI.parse(url)
+        req = Net::HTTP::Put.new("#{uri.path}?#{uri.query}")
+        req.basic_auth Escenic::API::Config.user, Escenic::API::Config.pass
+
+        body = options[:body]
+        req['Content-type'] = options[:type] ?
+            options[:type] : req['Content-type'] = 'application/atom+xml'
+
+        request do
+          Net::HTTP.start(uri.host, uri.port) do |http|
+            http.request(req, body)
+          end
+        end
       end
 
     end
