@@ -2,11 +2,10 @@ module Escenic
   module API
 
     class Raw
-
       attr_accessor :connection
 
       def initialize(options = {})
-        @connection = options[:connection]
+        @connection = Escenic::API::Connection.new
       end
 
       def self.add_method(method, action, options = {})
@@ -18,13 +17,14 @@ module Escenic
       end
 
       def request(method, action, options = {})
-        url = Escenic::API::Config.endpoint + action
         action.sub! ':id', options.delete(:id) if action.match ':id'
+        url = Escenic::API::Config.endpoint + action
         connection.send(method, url, options)
       end
 
-      add_method :get,  '/section/:id', as: 'get_section'
-      add_method :post, '/section',     as: 'create_section'
+      add_method :get,  '/section/:id',               as: 'get_section'
+      add_method :get,  '/section/ROOT/subsections',  as: 'get_root'
+      add_method :post, '/section',                   as: 'create_section'
     end
 
   end

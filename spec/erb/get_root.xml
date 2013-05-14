@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>http://localhost:8080/webservice/escenic/section/ROOT/subsections</id>
+  <link rel="self" href="http://localhost:8080/webservice/escenic/section/ROOT/subsections" type="application/atom+xml"/>
+  <updated>2013-05-14T14:40:53.847Z</updated>
+  <title type="text">Publication root sections you are authorized to.</title>
+  <link rel="http://www.vizrt.com/types/relation/protection-domains" href="http://localhost:8080/webservice/escenic/changelog" type="application/atom+xml"/>
+  <link rel="http://www.vizrt.com/types/relation/person" href="http://localhost:8080/webservice/escenic/person" type="application/atom+xml"/>
+  <link rel="http://www.vizrt.com/types/relation/section" href="http://localhost:8080/webservice/escenic/section" type="application/atom+xml"/>
+  <entry xmlns:app="http://www.w3.org/2007/app" xmlns:metadata="http://xmlns.escenic.com/2010/atom-metadata" xmlns:dcterms="http://purl.org/dc/terms/">
+    <id>http://localhost:8080/webservice/escenic/section/76</id>
+    <link rel="self" href="http://localhost:8080/webservice/escenic/section/76" type="application/atom+xml; type=entry"/>
+    <link rel="edit" href="http://localhost:8080/webservice/escenic/section/76" type="application/atom+xml; type=entry"/>
+    <link rel="http://www.vizrt.com/types/relation/lock" href="http://localhost:8080/webservice/escenic/lock/section/76" type="application/atom+xml; type=entry"/>
+    <dcterms:identifier>76</dcterms:identifier>
+    <link href="http://localhost:8080/webservice/escenic/publication/DemoPublication/" rel="http://www.vizrt.com/types/relation/top" type="application/atom+xml; type=entry" title="DemoPublication"/>
+    <link href="http://localhost:8080/webservice/escenic/publication/DemoPublication/" rel="http://www.vizrt.com/types/relation/publication" type="application/atom+xml; type=entry" title="DemoPublication"/>
+    <metadata:publication href="http://localhost:8080/webservice/escenic/publication/DemoPublication/" title="DemoPublication"/>
+    <content type="application/vnd.vizrt.payload+xml">
+      <vdf:payload xmlns:vdf="http://www.vizrt.com/types" model="http://localhost:8080/webservice/publication/DemoPublication/escenic/model/com.escenic.section">
+        <vdf:field name="com.escenic.sectionName">
+          <vdf:value>Home</vdf:value>
+        </vdf:field>
+        <vdf:field name="com.escenic.uniqueName">
+          <vdf:value>ece_frontpage</vdf:value>
+        </vdf:field>
+        <vdf:field name="com.escenic.directoryName">
+          <vdf:value>frontpage</vdf:value>
+        </vdf:field>
+        <vdf:field name="com.escenic.sectionURI"/>
+        <vdf:field name="com.escenic.inheritAccess">
+          <vdf:value>false</vdf:value>
+        </vdf:field>
+        <vdf:field name="com.escenic.virtualSource">
+          <vdf:value>false</vdf:value>
+        </vdf:field>
+        <vdf:field name="com.escenic.hidden">
+          <vdf:value>false</vdf:value>
+        </vdf:field>
+        <vdf:field name="com.escenic.agreementRequired">
+          <vdf:value>false</vdf:value>
+        </vdf:field>
+        <vdf:field name="com.escenic.agreementInfo"/>
+        <vdf:field name="com.escenic.agreementType"/>
+        <vdf:field name="com.escenic.sectionLayout">
+          <vdf:value>defaultsection</vdf:value>
+        </vdf:field>
+        <vdf:field name="com.escenic.articleLayout">
+          <vdf:value>defaultarticle</vdf:value>
+        </vdf:field>
+        <vdf:field name="com.escenic.sectionParameters">
+          <vdf:value>comments.moderated.forumId=
+            comments.unmoderated.forumId=
+            eae.logger.url=http://localhost:8080/analysis-logger/Logger
+            eae.queryservice.url=http://localhost:8080/analysis-qs/QueryService
+            facebook.app.id=
+            google.map.key=
+            inpage.enabled=false
+            inpage.webservice.url=http://localhost:8080/inpage-ws/
+            jsp.statistics=off
+            master.widget.nesting.limit=2
+            nesting.limit=3
+            publication.title=
+            rss.copyright=2009 Escenic Times
+            rss.description=The RSS feed of Escenic Times
+            rss.ttl=10
+            rss.webmaster=widgetframework@escenic.com (Widget Framework)
+            skin=escenic-times
+            template.enableESI=false
+            template.wireframe.markup.file=default
+            usercontent.news.uniqueName=content
+            usercontent.userProfile.articleTypeName=userProfile
+            usercontent.userProfile.uniqueName=profile
+            wf.template.designermode=
+          </vdf:value>
+        </vdf:field>
+      </vdf:payload>
+    </content>
+    <title type="text">Home</title>
+    <summary type="text">Home</summary>
+    <app:edited>2013-04-25T19:44:45.000Z</app:edited>
+    <link href="http://127.0.0.1:8080/DemoPublication/" rel="alternate"/>
+    <updated>2013-04-25T19:44:45.000Z</updated>
+    <published>2013-04-25T19:44:44.000Z</published>
+    <dcterms:created>2013-04-25T19:44:44.000Z</dcterms:created>
+    <category term="directory" scheme="http://www.vizrt.com/types"/>
+    <link rel="down" href="http://localhost:8080/webservice/escenic/section/76/subsections" type="application/atom+xml"/>
+    <link rel="http://www.vizrt.com/types/relation/inboxes" href="http://localhost:8080/webservice/content/com.escenic.inbox/152" type="application/vnd.escenic.content+xml; type=com.escenic.index-page" title=""/>
+    <link rel="http://www.vizrt.com/types/relation/inboxes" href="http://localhost:8080/webservice/escenic/section/76/inboxes" type="application/atom+xml"/>
+    <link rel="http://www.vizrt.com/types/relation/lists" href="http://localhost:8080/webservice/escenic/section/76/lists" type="application/atom+xml"/>
+    <link rel="http://www.vizrt.com/types/relation/pages" href="http://localhost:8080/webservice/content/com.escenic.index-page/151" type="application/vnd.escenic.content+xml; type=com.escenic.index-page" title="frontpage"/>
+    <link rel="http://www.vizrt.com/types/relation/pages" href="http://localhost:8080/webservice/escenic/section/76/pages" type="application/atom+xml"/>
+    <link rel="http://www.vizrt.com/types/relation/content-items" href="http://localhost:8080/webservice/escenic/section/76/content-items" type="application/atom+xml"/>
+    <link rel="http://www.vizrt.com/types/relation/changelog" href="http://localhost:8080/webservice/escenic/changelog/section/76" type="application/atom+xml"/>
+    <link rel="http://www.vizrt.com/types/relation/active-page" href="http://localhost:8080/webservice/content/com.escenic.index-page/151" type="application/vnd.escenic.content+xml; type=com.escenic.index-page" title="frontpage"/>
+    <metadata:home-section>false</metadata:home-section>
+    <metadata:draft-page>false</metadata:draft-page>
+  </entry>
+</feed>
