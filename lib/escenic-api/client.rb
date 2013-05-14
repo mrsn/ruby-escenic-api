@@ -7,11 +7,17 @@ module Escenic
       attr_accessor :raw
 
       def initialize
-        @connection = Escenic::API::Connection.new
-        @raw        = Escenic::API::Raw.new :connection => @connection
+        @raw = Escenic::API::Raw.new
       end
 
+      def section(options = {})
+        Escenic::API::Section.init(options, self)
+      end
 
+      def root_section
+        response = self.raw.get_root
+        Escenic::API::Object.init(response, self)
+      end
 
     end
 
