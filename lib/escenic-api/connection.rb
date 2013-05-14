@@ -7,7 +7,7 @@ module Escenic
         raise Escenic::API::Error::Config if
           Escenic::API::Config.user.nil?    ||
           Escenic::API::Config.pass.nil?    ||
-          Escenic::API::Config.endpoint.nil?
+          Escenic::API::Config.base_url.nil?
       end
 
       def request(options = {})

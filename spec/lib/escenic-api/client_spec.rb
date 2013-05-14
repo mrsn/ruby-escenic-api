@@ -57,7 +57,7 @@ describe Escenic::API::Client do
     end
 
     it 'returns a Escenic::API::Section if given only a id parameter' do
-      stub_request(:get, 'http://mockuser:mockpass@www.example.com/section/51?').
+      stub_request(:get, 'http://mockuser:mockpass@www.example.com/webservice/escenic/section/51?').
           with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
           to_return(:status => 200, :body => GET_SECTION_XML, :headers => {})
 
@@ -65,29 +65,32 @@ describe Escenic::API::Client do
       section.should be_an_instance_of( Escenic::API::Section )
     end
 
+
+    #pending
+    #it 'returns a Escenic::API::Section if given a name, unique_name, and directory parameter' do
+    #  stub_request(:post, 'http://mockuser:mockpass@www.example.com/webservice/escenic/section?').
+    #      with(:headers => {'Accept'=>'*/*', 'Content-Type'=>'application/atom+xml', 'User-Agent'=>'Ruby'}).
+    #      to_return(:status => 200, :body => '', :headers => {})
+    #
+    #  section = @client.section(
+    #      name: 'name',
+    #      unique_name: 'unique_name',
+    #      directory: 'directory'
+    #  )
+    #  section.should be_an_instance_of( Escenic::API::Section )
+    #end
+
+
   end
 
   describe '#root_section' do
     it 'returns a Escenic::API::Section' do
-      stub_request(:get, "http://mockuser:mockpass@www.example.com/section/ROOT/subsections?").
+      stub_request(:get, "http://mockuser:mockpass@www.example.com/webservice/escenic/section/ROOT/subsections?").
           with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
           to_return(:status => 200, :body => GET_ROOT_XML, :headers => {})
       @client.root_section.should be_an_instance_of( Escenic::API::Object )
     end
   end
 
-  #pending
-  #it 'returns a Escenic::API::Section if given a name, unique_name, and directory parameter' do
-  #  stub_request(:post, 'http://mockuser:mockpass@www.example.com/section?').
-  #      with(:headers => {'Accept'=>'*/*', 'Content-Type'=>'application/atom+xml', 'User-Agent'=>'Ruby'}).
-  #      to_return(:status => 200, :body => '', :headers => {})
-  #
-  #  section = @client.section(
-  #      name: 'name',
-  #      unique_name: 'unique_name',
-  #      directory: 'directory'
-  #  )
-  #  section.should be_an_instance_of( Escenic::API::Section )
-  #end
 
 end

@@ -4,13 +4,13 @@ module Escenic
     module Config
 
       class << self
-        attr_accessor :endpoint
+        attr_accessor :base_url
         attr_accessor :user
         attr_accessor :pass
         attr_accessor :publication
       end
 
-      self.endpoint     = nil
+      self.base_url     = nil
       self.user         = nil
       self.pass         = nil
       self.publication  = nil

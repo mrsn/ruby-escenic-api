@@ -1,4 +1,4 @@
-endpoint:     'http://www.example.com'  # FULL URI TO ESCENIC API
+base_url:     'http://www.example.com/webservice'  # FULL URI TO ESCENIC API
 user:         'mockuser'                # USERNAME
 pass:         'mockpass'                # PASSWORD
 publication:  'publication'             # PUBLICATION NAME

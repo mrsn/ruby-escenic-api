@@ -5,9 +5,12 @@ module Escenic
 
     class Client
       attr_accessor :raw
+      attr_reader :base_model, :endpoint
 
       def initialize
-        @raw = Escenic::API::Raw.new
+        @base_model = "#{Escenic::API::Config.base_url}/publication/#{Escenic::API::Config.publication}/escenic/model"
+        @endpoint = "#{Escenic::API::Config.base_url}/escenic"
+        @raw = Escenic::API::Raw.new({}, self)
       end
 
       def section(options = {})
