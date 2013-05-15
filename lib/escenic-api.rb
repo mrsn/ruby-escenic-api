@@ -11,7 +11,6 @@ end
 require 'escenic-api/version'
 require 'escenic-api/util/config'
 require 'escenic-api/util/error'
-require 'escenic-api/util/util'
 require 'escenic-api/util/hash'
 require 'escenic-api/payload'
 require 'escenic-api/payload/section'

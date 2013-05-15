@@ -18,7 +18,7 @@ module Escenic
       end
 
       def request(method, action, options = {})
-        action.sub! ':id', options.delete(:id) if action.match ':id'
+        action.sub! ':id', options.delete(:id).to_s if action.match ':id'
         url = self.endpoint + action
         connection.send(method, url, options)
       end
