@@ -1,3 +1,6 @@
+require 'uri'
+require 'net/http'
+
 module Escenic
   module API
 
@@ -30,10 +33,10 @@ module Escenic
           when 500..599
             raise Escenic::API::Error::ServerError
           else
-            if response.body
-              Hash.from_xml(response.body)
-            else
+            if response.body.empty?
               response
+            else
+              Hash.from_xml(response.body)
             end
         end
       end
