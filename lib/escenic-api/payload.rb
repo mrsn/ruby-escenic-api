@@ -7,8 +7,8 @@ module Escenic
         @endpoint     = client.endpoint
         @publication  = Escenic::API::Config.publication
         @base_model   = client.base_model
-        @parent_id    = options[:parent_id]    || client.root_section.feed.entry.identifier
-        @parent_title = options[:parent_title] || client.root_section.feed.entry.title
+        @parent_id    = options.delete(:parentId)    || client.root_section.feed.entry.identifier
+        @parent_title = options.delete(:parentTitle) || client.root_section.feed.entry.title
       end
 
     end
