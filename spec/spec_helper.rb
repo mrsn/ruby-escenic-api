@@ -5,7 +5,7 @@ SimpleCov.start do
   add_filter 'spec'
 end
 
-require 'escenic'
+require 'escenic-api'
 require 'rspec'
 require 'webmock/rspec'
 
