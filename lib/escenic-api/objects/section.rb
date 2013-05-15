@@ -19,9 +19,9 @@ module Escenic
 
       def self.create(options={}, client)
         raise Escenic::API::Error::Params.new 'Section name, unique name, and directory required to create a section.' if
-            options[:name].nil?         ||
-            options[:unique_name].nil?  ||
-            options[:directory].nil?
+            options[:sectionName].nil?  ||
+            options[:uniqueName].nil?   ||
+            options[:directoryName].nil?
         # Create payload *pending*
         payload = Escenic::API::SectionPayload.new(options, client)
         # Create the section

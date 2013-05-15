@@ -30,16 +30,11 @@ module Escenic
                   'xmlns:vdf' => 'http://www.vizrt.com/types',
                   model: "#{@base_model}/#{@model_type}"
               ) {
-                xml[:vdf].field( name: 'com.escenic.sectionName' ) {
-                  xml[:vdf].value options[:name]
-                }
-                xml[:vdf].field( name: 'com.escenic.uniqueName' ) {
-                  xml[:vdf].value options[:unique_name]
-                }
-                xml[:vdf].field( name: 'com.escenic.directoryName' ) {
-                  xml[:vdf].value options[:directory]
-                }
-
+                options.each do |key, value|
+                  xml[:vdf].field(name: "com.escenic.#{key}") {
+                    xml[:vdf].value value
+                  }
+                end
               }
             }
           }
