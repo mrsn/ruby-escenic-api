@@ -25,8 +25,9 @@ module Escenic
         # Create payload *pending*
         payload = Escenic::API::SectionPayload.new(options, client)
         # Create the section
-        response = client.raw.create_section(body: payload)
-        instance = self.init(id: response)
+        response = client.raw.create_section(body: payload.xml)
+        id = response.header['location'].split('/').last
+        instance = self.init({id: id}, client)
         instance.client = client
         instance
       end

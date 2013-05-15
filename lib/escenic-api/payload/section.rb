@@ -3,10 +3,12 @@ module Escenic
 
     class SectionPayload < Escenic::API::Payload
 
-      def intialize(options={})
-        @model_type = 'com.escenic.section'
+      attr_accessor :model_type, :xml
+
+      def initialize(options={}, client)
         super
-        section(options)
+        @model_type = 'com.escenic.section'
+        @xml = section(options)
       end
 
       def section(options={})
