@@ -6,9 +6,9 @@ describe Escenic::API::Client do
     @random = rand(9999999999)
     @client = Escenic::API::Client.new
     @section = @client.section(
-        sectionName: "new section #{@random}",
-        uniqueName: "new_section_#{@random}",
-        directoryName: "new_section_#{@random}"
+        sectionName:    "new section #{@random}",
+        uniqueName:     "new_section_#{@random}",
+        directoryName:  "new_section_#{@random}"
     )
   end
 
@@ -70,22 +70,20 @@ describe Escenic::API::Client do
 
     it 'returns a Escenic::API::Section if given a name, unique_name, directory parameter' do
       section = @client.section(
-          sectionName: "rspec section #{@random}",
-          uniqueName: "rspec_section_#{@random}",
-          directoryName: "rspec_section_#{@random}"
+          sectionName:    "rspec section #{@random}",
+          uniqueName:     "rspec_section_#{@random}",
+          directoryName:  "rspec_section_#{@random}"
       )
       section.should be_an_instance_of(Escenic::API::Section)
     end
 
     it 'returns an Net::HTTPNoContent when a section is deleted' do
       section = @client.section(
-          sectionName: "delete section test #{@random}",
-          uniqueName: "delete_section_test_#{@random}",
-          directoryName: "delete_section_test_#{@random}"
+          sectionName:    "delete section test #{@random}",
+          uniqueName:     "delete_section_test_#{@random}",
+          directoryName:  "delete_section_test_#{@random}"
       )
-
       section.delete.should be_an_instance_of(Net::HTTPNoContent)
-
     end
 
   end

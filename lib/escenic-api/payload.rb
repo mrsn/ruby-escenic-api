@@ -2,13 +2,15 @@ module Escenic
   module API
 
     class Payload
+      attr_reader :client, :endpoint, :publication, :base_model, :parent_id, :parent_title
 
-      def initialize(options={}, client)
-        @endpoint     = client.endpoint
+      def initialize(options={})
+        @client       = Escenic::API::Client.new
+        @endpoint     = Escenic::API::Config.endpoint
         @publication  = Escenic::API::Config.publication
-        @base_model   = client.base_model
-        @parent_id    = options.delete(:parentId)    || client.root_section.feed.entry.identifier
-        @parent_title = options.delete(:parentTitle) || client.root_section.feed.entry.title
+        @base_model   = Escenic::API::Config.base_model
+        @parent_id    = ( options.delete(:parentId)     || @client.root_section.feed.entry.identifier ).to_s
+        @parent_title = ( options.delete(:parentTitle)  || @client.root_section.feed.entry.title )
       end
 
     end
