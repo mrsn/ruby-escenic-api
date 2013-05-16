@@ -28,12 +28,12 @@ module Escenic
           when 400, 406
             #TODO Parse response and display useful message.
             raise Escenic::API::Error.new(response.body)
-          when 300..399
+          when 300..302,304..399
             raise Escenic::API::Error::Redirect
           when 500..599
             raise Escenic::API::Error::ServerError
           else
-            if response.body.empty?
+            if response.body.nil? || response.body.empty?
               response
             else
               Hash.from_xml(response.body)

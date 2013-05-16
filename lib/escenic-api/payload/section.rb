@@ -8,10 +8,17 @@ module Escenic
       def initialize(options={}, client)
         super
         @model_type = 'com.escenic.section'
-        @xml = section(options)
+        case options.delete(:verb)
+          when :create
+            @xml = create(options)
+          when :delete
+            @xml = delete(options)
+          else
+            raise "Invalid verb: #{options[:verb]}"
+        end
       end
 
-      def section(options={})
+      def create(options={})
         builder = Nokogiri::XML::Builder.new do |xml|
           xml.entry(
               xmlns: 'http://www.w3.org/2005/Atom',
@@ -35,6 +42,27 @@ module Escenic
                     xml[:vdf].value value
                   }
                 end
+              }
+            }
+          }
+        end
+        builder.to_xml
+      end
+
+      def delete(options={})
+        builder = Nokogiri::XML::Builder.new do |xml|
+          xml.entry(
+              xmlns: 'http://www.w3.org/2005/Atom',
+
+          ) {
+            xml.content(type: 'application/vnd.vizrt.payload+xml') {
+              xml[:vdf].payload(
+                  'xmlns:vdf' => 'http://www.vizrt.com/types',
+                  model: "#{@endpoint}/model/#{@model_type}.delete.#{options.delete(:id)}"
+              ) {
+                xml[:vdf].field(name: 'com.escenic.section.delete.confirmation') {
+                  xml[:vdf].value 'true'
+                }
               }
             }
           }

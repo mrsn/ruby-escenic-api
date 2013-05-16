@@ -18,11 +18,12 @@ module Escenic
       end
 
       def self.create(options={}, client)
-        raise Escenic::API::Error::Params.new 'Section name, unique name, and directory required to create a section.' if
+        raise Escenic::API::Error::Params.new 'secctionName, uniqueName, and directoryName required to create a section.' if
             options[:sectionName].nil?  ||
             options[:uniqueName].nil?   ||
             options[:directoryName].nil?
         # Create payload *pending*
+        options[:verb] = :create
         payload = Escenic::API::SectionPayload.new(options, client)
         # Create the section
         response = client.raw.create_section(body: payload.xml)
@@ -37,7 +38,9 @@ module Escenic
       end
 
       def delete
-
+        id = self.entry.identifier
+        payload = Escenic::API::SectionPayload.new({verb: :delete, id: id}, client)
+        client.raw.confirm_delete(id: id, body: payload.xml)
       end
 
     end

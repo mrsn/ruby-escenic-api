@@ -38,7 +38,7 @@ describe Escenic::API::Connection do
       end
     end
 
-    300.upto(399) do |code|
+    304.upto(399) do |code|
       it "returns a Escenic::API::Error::Redirect when the response is #{code}" do
         body = mock :code => code, :body => 'I am a string'
         lambda do
