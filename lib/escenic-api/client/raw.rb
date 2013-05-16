@@ -26,6 +26,8 @@ module Escenic
       add_method :get,  '/section/:id',               as: 'get_section'
       add_method :get,  '/section/ROOT/subsections',  as: 'get_root'
       add_method :post, '/section',                   as: 'create_section'
+      add_method :delete, '/section/:id',             as: 'delete_section'
+      add_method :put, '/section/:id/delete',         as: 'confirm_delete'
     end
 
   end

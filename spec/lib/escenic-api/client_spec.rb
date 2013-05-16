@@ -77,6 +77,17 @@ describe Escenic::API::Client do
       section.should be_an_instance_of(Escenic::API::Section)
     end
 
+    it 'returns an Net::HTTPNoContent when a section is deleted' do
+      section = @client.section(
+          sectionName: "delete section test #{@random}",
+          uniqueName: "delete_section_test_#{@random}",
+          directoryName: "delete_section_test_#{@random}"
+      )
+
+      section.delete.should be_an_instance_of(Net::HTTPNoContent)
+
+    end
+
   end
 
   describe '#root_section' do
