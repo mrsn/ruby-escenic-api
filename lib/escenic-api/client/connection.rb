@@ -1,6 +1,3 @@
-require 'uri'
-require 'net/http'
-
 module Escenic
   module API
 
@@ -36,7 +33,7 @@ module Escenic
             if response.body.nil? || response.body.empty?
               response
             else
-              Hash.from_xml(response.body)
+              options[:raw] ? response.body : Hash.from_xml(response.body)
             end
         end
       end
@@ -48,6 +45,19 @@ module Escenic
         req.basic_auth  Escenic::API::Config.user, Escenic::API::Config.pass
 
         request do
+          Net::HTTP.start(uri.host, uri.port) do |http|
+            http.request(req)
+          end
+        end
+      end
+
+      def get_raw(url, options = {})
+
+        uri = URI.parse(url)
+        req = Net::HTTP::Get.new("#{uri.path}?#{uri.query}")
+        req.basic_auth  Escenic::API::Config.user, Escenic::API::Config.pass
+
+        request(raw: true) do
           Net::HTTP.start(uri.host, uri.port) do |http|
             http.request(req)
           end
@@ -72,8 +82,8 @@ module Escenic
         req.basic_auth Escenic::API::Config.user, Escenic::API::Config.pass
 
         body = options[:body]
-        req['Content-type'] = options[:type] ?
-            options[:type] : req['Content-type'] = 'application/atom+xml'
+        req['If-Match'] = '*'
+        req['Content-type'] = options[:type] ? options[:type] : 'application/atom+xml'
 
         request do
           Net::HTTP.start(uri.host, uri.port) do |http|
@@ -88,8 +98,8 @@ module Escenic
         req.basic_auth Escenic::API::Config.user, Escenic::API::Config.pass
 
         body = options[:body]
-        req['Content-type'] = options[:type] ?
-            options[:type] : req['Content-type'] = 'application/atom+xml'
+        req['If-Match'] = '*'
+        req['Content-type'] = options[:type] ? options[:type] : 'application/atom+xml'
 
         request do
           Net::HTTP.start(uri.host, uri.port) do |http|

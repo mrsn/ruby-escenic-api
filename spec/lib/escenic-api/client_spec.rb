@@ -3,12 +3,12 @@ require 'spec_helper'
 describe Escenic::API::Client do
 
   before do
-    @random = rand(9999999999)
+    @time = Time.now.to_i
     @client = Escenic::API::Client.new
     @section = @client.section(
-        sectionName:    "new section #{@random}",
-        uniqueName:     "new_section_#{@random}",
-        directoryName:  "new_section_#{@random}"
+        sectionName:    "new section #{@time}",
+        uniqueName:     "new_section_#{@time}",
+        directoryName:  "new_section_#{@time}"
     )
   end
 
@@ -68,31 +68,43 @@ describe Escenic::API::Client do
       section.should be_an_instance_of( Escenic::API::Section )
     end
 
-    it 'returns a Escenic::API::Section if given a name, unique_name, directory parameter' do
-      section = @client.section(
-          sectionName:    "rspec section #{@random}",
-          uniqueName:     "rspec_section_#{@random}",
-          directoryName:  "rspec_section_#{@random}"
-      )
-      section.should be_an_instance_of(Escenic::API::Section)
-    end
-
     it 'returns an Net::HTTPNoContent when a section is deleted' do
       section = @client.section(
-          sectionName:    "delete section test #{@random}",
-          uniqueName:     "delete_section_test_#{@random}",
-          directoryName:  "delete_section_test_#{@random}"
+          sectionName:    "delete section test #{@time}",
+          uniqueName:     "delete_section_test_#{@time}",
+          directoryName:  "delete_section_test_#{@time}"
       )
-      section.delete.should be_an_instance_of(Net::HTTPNoContent)
+      section.delete?.should equal( true )
+    end
+
+    it 'returns a Escenic::API::Section if given a name, unique_name, directory parameter' do
+      section = @client.section(
+          sectionName:    "create section #{@time}",
+          uniqueName:     "create_section_#{@time}",
+          directoryName:  "create_section_#{@time}"
+      )
+      section.should be_an_instance_of( Escenic::API::Section )
+    end
+
+    it 'returns true when a section is updated' do
+      section = @client.section(
+          sectionName:    "update section test #{@time}",
+          uniqueName:     "update_section_test_#{@time}",
+          directoryName:  "update_section_test_#{@time}"
+      )
+      section.update?('sectionName' => "this name changed #{@time}").should equal(true)
     end
 
   end
 
   describe '#root_section' do
     it 'returns a Escenic::API::Section' do
-      @client.root_section.should be_an_instance_of( Escenic::API::Object )
+      @client.root.should be_an_instance_of( Escenic::API::Root )
     end
   end
 
+  after do
+    @section.delete?
+  end
 
 end

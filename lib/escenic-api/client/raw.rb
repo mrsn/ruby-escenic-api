@@ -22,11 +22,14 @@ module Escenic
         connection.send(method, url, options)
       end
 
-      add_method :post,   '/section',                   as: 'create_section'
-      add_method :delete, '/section/:id',               as: 'delete_section'
-      add_method :get,    '/section/:id',               as: 'get_section'
-      add_method :put,    '/section/:id/delete',        as: 'confirm_delete'
-      add_method :get,    '/section/ROOT/subsections',  as: 'get_root'
+      add_method :post,     '/section',                   as: 'create_section'
+      add_method :get,      '/section/:id',               as: 'get_section'
+      add_method :get_raw,  '/section/:id',               as: 'get_section_xml'
+      add_method :put,      '/section/:id',               as: 'update_section'
+      add_method :delete,   '/section/:id',               as: 'delete_section'
+      add_method :put,      '/section/:id/delete',        as: 'delete_section_confirm'
+      add_method :get,      '/section/:id/subsections',   as: 'get_subsections'
+      add_method :get,      '/section/ROOT/subsections',  as: 'get_root'
     end
 
   end

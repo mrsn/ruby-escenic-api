@@ -9,8 +9,8 @@ module Escenic
         @endpoint     = Escenic::API::Config.endpoint
         @publication  = Escenic::API::Config.publication
         @base_model   = Escenic::API::Config.base_model
-        @parent_id    = ( options.delete(:parentId)     || @client.root_section.feed.entry.identifier ).to_s
-        @parent_title = ( options.delete(:parentTitle)  || @client.root_section.feed.entry.title )
+        @parent_id    = ( options.delete(:parentId)     || @client.root.feed.entry.identifier ).to_s
+        @parent_title = ( options.delete(:parentTitle)  || @client.root.feed.entry.title )
       end
 
     end

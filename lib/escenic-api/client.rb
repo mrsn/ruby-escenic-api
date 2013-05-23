@@ -1,5 +1,3 @@
-require 'escenic-api/client/raw'
-
 module Escenic
   module API
 
@@ -17,9 +15,8 @@ module Escenic
         Escenic::API::Section.init(options)
       end
 
-      def root_section
-        response = raw.get_root
-        Escenic::API::Object.init(response)
+      def root
+        Escenic::API::Root.init
       end
 
     end

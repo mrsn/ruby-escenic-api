@@ -14,6 +14,10 @@ module Escenic
         instance
       end
 
+      def self.client
+        Escenic::API::Client.new
+      end
+
     end
 
   end
