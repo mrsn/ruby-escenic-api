@@ -1,0 +1,4 @@
+base_url:     'http://www.example.com/webservice'   # URI TO ESCENIC API
+user:         'USER'                                # USERNAME
+pass:         'PASS'                                # PASSWORD
+publication:  'PUBLICATION'                         # PUBLICATION NAME

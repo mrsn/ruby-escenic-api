@@ -3,21 +3,25 @@ module Escenic
 
     class SectionPayload < Escenic::API::Payload
 
-      attr_accessor :model_type, :xml
+      attr_reader :model_type, :xml
 
-      def initialize(options={}, client)
+      def initialize(options={})
         super
         @model_type = 'com.escenic.section'
         case options.delete(:verb)
           when :create
             @xml = create(options)
+          when :update
+            @xml = update(options)
           when :delete
             @xml = delete(options)
           else
-            raise "Invalid verb: #{options[:verb]}"
+            raise Escenic::API::Error.new('Invalid verb: ' + options[:verb])
         end
       end
 
+
+      private
       def create(options={})
         builder = Nokogiri::XML::Builder.new do |xml|
           xml.entry(
@@ -28,14 +32,14 @@ module Escenic
           ) {
             xml.link(
                 rel: 'http://www.vizrt.com/types/relation/parent',
-                href: "#{@endpoint}/section/#{@parent_id}",
-                title: "#{@parent_title}",
+                href: endpoint + '/section/' + parent_id,
+                title: parent_title,
                 type: 'application/atom+xml; type=entry'
             )
             xml.content(type: 'application/vnd.vizrt.payload+xml') {
               xml[:vdf].payload(
                   'xmlns:vdf' => 'http://www.vizrt.com/types',
-                  model: "#{@base_model}/#{@model_type}"
+                  model: base_model + '/' + model_type
               ) {
                 options.each do |key, value|
                   xml[:vdf].field(name: "com.escenic.#{key}") {
@@ -53,12 +57,11 @@ module Escenic
         builder = Nokogiri::XML::Builder.new do |xml|
           xml.entry(
               xmlns: 'http://www.w3.org/2005/Atom',
-
           ) {
             xml.content(type: 'application/vnd.vizrt.payload+xml') {
               xml[:vdf].payload(
                   'xmlns:vdf' => 'http://www.vizrt.com/types',
-                  model: "#{@endpoint}/model/#{@model_type}.delete.#{options.delete(:id)}"
+                  model: endpoint + '/model/' + model_type + '.delete.' + options.delete(:id).to_s
               ) {
                 xml[:vdf].field(name: 'com.escenic.section.delete.confirmation') {
                   xml[:vdf].value 'true'
@@ -66,6 +69,29 @@ module Escenic
               }
             }
           }
+        end
+        builder.to_xml
+      end
+
+      def update(options={})
+        response  = self.client.raw.get_section_xml(id: options.delete(:id))
+        builder   = Nokogiri::XML(response)
+        namespace = builder.collect_namespaces
+        payload   = builder.xpath('//vdf:payload', namespace)
+
+        options.each do |key, value|
+          field = payload.xpath('//vdf:field[@name = "com.escenic.' + key + '"]', namespace).children
+          if field.count == 0
+            # add the field to the xml
+            vdf_field = Nokogiri::XML::Node.new('vdf:field', builder)
+            vdf_value = Nokogiri::XML::Node.new('vdf:value', builder)
+            vdf_field.set_attribute 'name', 'com.escenic.' + key
+            vdf_value.content = value
+            vdf_field.add_child(vdf_value)
+            payload.children.first.add_previous_sibling(vdf_field)
+          else
+            field.xpath('//vdf:value', namespace).children.first.content = value
+          end
         end
         builder.to_xml
       end
