@@ -24,13 +24,13 @@ module Escenic
             options[:directoryName].nil?
 
         # Create payload
-        options[:verb] = :create
-        payload = Escenic::API::SectionPayload.new(options)
+        options[:verb]  = :create
+        payload         = Escenic::API::SectionPayload.new(options)
 
         # Create the section
-        response = self.client.raw.create_section(body: payload.xml)
-        id = response.header['location'].split('/').last
-        instance = self.init({id: id})
+        response  = self.client.raw.create_section(body: payload.xml)
+        id        = response.header['location'].split('/').last
+        instance  = self.init({id: id})
         instance
       end
 
@@ -41,9 +41,6 @@ module Escenic
         response  = self.client.raw.update_section(id: self.entry.identifier, body: payload.xml)
 
         if response.instance_of?(Net::HTTPNoContent)
-          self.each do |k,v|
-            self.delete(k.to_sym)
-          end
           true
         else
           false
@@ -52,10 +49,10 @@ module Escenic
       end
 
       def delete?
-        id      = self.entry.identifier
-        options = { id: id, verb: :delete }
-        payload = Escenic::API::SectionPayload.new(options)
-        response = self.client.raw.delete_section_confirm(id: id, body: payload.xml)
+        id        = self.entry.identifier
+        options   = { id: id, verb: :delete }
+        payload   = Escenic::API::SectionPayload.new(options)
+        response  = self.client.raw.delete_section_confirm(id: id, body: payload.xml)
 
         if response.instance_of?(Net::HTTPNoContent)
           self.each do |k,v|

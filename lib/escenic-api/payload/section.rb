@@ -79,7 +79,8 @@ module Escenic
         namespace = builder.collect_namespaces
         payload   = builder.xpath('//vdf:payload', namespace)
 
-        options.each do |key, value|
+        options.each do |k, value|
+          key = k.to_s
           field = payload.xpath('//vdf:field[@name = "com.escenic.' + key + '"]', namespace).children
           if field.count == 0
             # add the field to the xml

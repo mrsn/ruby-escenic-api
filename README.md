@@ -1,5 +1,4 @@
 # Escenic::API
-[![Build Status](https://travis-ci.org/toddedw/ruby-escenic-api.png)](https://travis-ci.org/toddedw/ruby-escenic-api)
 
 TODO: Write a gem description
 
@@ -7,15 +6,11 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'escenic'
+    gem 'escenic-api', git: 'git://github.com/toddedw/ruby-escenic-api.git'
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install escenic
 
 ## Usage
 

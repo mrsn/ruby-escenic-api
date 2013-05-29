@@ -39,7 +39,6 @@ module Escenic
       end
 
       def get(url, options = {})
-
         uri = URI.parse(url)
         req = Net::HTTP::Get.new("#{uri.path}?#{uri.query}")
         req.basic_auth  Escenic::API::Config.user, Escenic::API::Config.pass
@@ -82,7 +81,7 @@ module Escenic
         req.basic_auth Escenic::API::Config.user, Escenic::API::Config.pass
 
         body = options[:body]
-        req['If-Match'] = '*'
+        req['If-Match']     = options[:ifmatch] ? options[:ifmatch] : '*'
         req['Content-type'] = options[:type] ? options[:type] : 'application/atom+xml'
 
         request do
@@ -98,7 +97,7 @@ module Escenic
         req.basic_auth Escenic::API::Config.user, Escenic::API::Config.pass
 
         body = options[:body]
-        req['If-Match'] = '*'
+        req['If-Match']     = options[:ifmatch] ? options[:ifmatch] : '*'
         req['Content-type'] = options[:type] ? options[:type] : 'application/atom+xml'
 
         request do
