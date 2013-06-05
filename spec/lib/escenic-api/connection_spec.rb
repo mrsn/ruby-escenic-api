@@ -9,21 +9,21 @@ describe Escenic::API::Connection do
   describe "#request" do
 
     it 'returns a Escenic::API::Error::Unauthorized when the response is 401' do
-      body = mock :code => 401, :body => 'I am a string'
+      body = mock code: 401, body: 'I am a string'
       lambda do
         @connection.get_response { body }
       end.should raise_error( Escenic::API::Error::Unauthorized )
     end
 
     it 'returns a Escenic::API::Error::Forbidden when the response is 403' do
-      body = mock :code => 403, :body => 'I am a string'
+      body = mock code: 403, body: 'I am a string'
       lambda do
         @connection.get_response { body }
       end.should raise_error( Escenic::API::Error::Forbidden )
     end
 
     it 'returns a Escenic::API::Error::NotFound when the response is 404' do
-      body = mock :code => 404, :body => 'I am a string'
+      body = mock code: 404, body: 'I am a string'
       lambda do
         @connection.get_response { body }
       end.should raise_error( Escenic::API::Error::NotFound )
@@ -31,7 +31,7 @@ describe Escenic::API::Connection do
 
     [400, 406].each do |code|
       it "returns a Escenic::API::Error when the response is #{code}" do
-        body = mock :code => code, :body => 'I am a string'
+        body = mock code: code, body: 'I am a string'
         lambda do
           @connection.get_response { body }
         end.should raise_error( Escenic::API::Error )
@@ -40,7 +40,7 @@ describe Escenic::API::Connection do
 
     304.upto(399) do |code|
       it "returns a Escenic::API::Error::Redirect when the response is #{code}" do
-        body = mock :code => code, :body => 'I am a string'
+        body = mock code: code, body: 'I am a string'
         lambda do
           @connection.get_response { body }
         end.should raise_error( Escenic::API::Error::Redirect )
@@ -49,7 +49,7 @@ describe Escenic::API::Connection do
 
     500.upto(599) do |code|
       it "returns a Escenic::API::Error::ServerError when the response is #{code}" do
-        body = mock :code => code, :body => 'I am a string'
+        body = mock code: code, body: 'I am a string'
         lambda do
           @connection.get_response { body }
         end.should raise_error( Escenic::API::Error::ServerError )

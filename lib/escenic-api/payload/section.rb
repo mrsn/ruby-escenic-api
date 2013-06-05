@@ -77,7 +77,7 @@ module Escenic
       end
 
       def update(options={})
-        response  = self.client.raw.get_section_xml(id: options.delete(:id))
+        response  = Escenic::API::client.raw.get_section_xml(id: options.delete(:id))
         builder   = Nokogiri::XML(response)
         namespace = builder.collect_namespaces
         payload   = builder.xpath('//vdf:payload', namespace)
