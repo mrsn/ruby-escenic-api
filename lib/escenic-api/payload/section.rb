@@ -8,7 +8,10 @@ module Escenic
       def initialize(options={})
         super
         @model_type = 'com.escenic.section'
-        case options.delete(:verb)
+
+        raise Escenic::API::Error::Params.new ':verb is required.' if options[:verb].nil?
+
+        case verb = options.delete(:verb)
           when :create
             @xml = create(options)
           when :update
@@ -16,7 +19,7 @@ module Escenic
           when :delete
             @xml = delete(options)
           else
-            raise Escenic::API::Error.new('Invalid verb: ' + options[:verb])
+            raise Escenic::API::Error.new('Invalid verb: ' + verb)
         end
       end
 

@@ -30,8 +30,7 @@ module Escenic
         # Create the section
         response  = self.client.raw.create_section(body: payload.xml)
         id        = response.header['location'].split('/').last
-        instance  = self.init({id: id})
-        instance
+        self.init({id: id})
       end
 
       def update?(options={})
@@ -45,7 +44,6 @@ module Escenic
         else
           false
         end
-
       end
 
       def delete?
@@ -65,9 +63,9 @@ module Escenic
 
       end
 
+      # Return a list of subsections for a section
       def subsections
-        response = self.client.get_subsections(id: self.entry.identifier)
-        # Return a list of subsections for a section
+       self.client.get_subsections(id: self.entry.identifier)
       end
 
     end
