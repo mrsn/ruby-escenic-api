@@ -14,7 +14,7 @@ describe Escenic::API::Client do
 
   describe '#raw' do
     it 'should be an instance of Escenic::API::Raw' do
-      conn = @client.instance_variable_get(:@raw)
+      conn = @client.raw
       conn.should be_an_instance_of(Escenic::API::Raw)
     end
   end

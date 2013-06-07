@@ -3,22 +3,12 @@ module Escenic
 
     class ContentItemPayload < Escenic::API::Payload
 
-      attr_reader :model_type, :xml
 
       def initialize(options={})
-        super
-        @model_type = options.delete(:type)
-        case options.delete(:verb)
-          when :create
-            @xml = create(options)
-          when :update
-            @xml = update(options)
-          else
-            raise Escenic::API::Error.new('Invalid verb: ' + options[:verb])
-        end
+        super options # model_type is handled externally
+        handle_verb options
       end
 
-      private
       def create(options={})
         builder = Nokogiri::XML::Builder.new do |xml|
           xml.entry(
