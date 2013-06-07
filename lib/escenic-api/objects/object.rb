@@ -1,21 +1,11 @@
 module Escenic
   module API
 
-    class Object < Hashie::Mash
-      attr_reader :client
+    class Object
+      attr_accessor :content
 
-      def initialize(source_hash = nil, default = nil, &blk)
-        super
-        @client = Escenic::API::Client.new
-      end
-
-      def self.init(response)
-        instance = self.new(response)
-        instance
-      end
-
-      def self.client
-        Escenic::API::Client.new
+      def initialize(content)
+        @content = Hashie::Mash.new(content)
       end
 
     end

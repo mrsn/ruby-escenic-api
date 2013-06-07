@@ -6,19 +6,21 @@ require 'nokogiri'
 
 module Escenic
   module API
-
+    def self.client
+      @@client ||= Escenic::API::Client.new
+    end
   end
 end
 
-require 'escenic-api/version'
-require 'escenic-api/util/config'
-require 'escenic-api/util/error'
-require 'escenic-api/util/hash'
-require 'escenic-api/client'
-require 'escenic-api/client/raw'
-require 'escenic-api/client/connection'
-require 'escenic-api/objects/object'
-require 'escenic-api/objects/root'
-require 'escenic-api/objects/section'
-require 'escenic-api/payload/payload'
-require 'escenic-api/payload/section'
+require_relative 'escenic-api/version'
+require_relative 'escenic-api/client'
+require_relative 'escenic-api/util/config'
+require_relative 'escenic-api/util/error'
+require_relative 'escenic-api/util/hash'
+require_relative 'escenic-api/client/raw'
+require_relative 'escenic-api/client/connection'
+require_relative 'escenic-api/objects/object'
+require_relative 'escenic-api/objects/root'
+require_relative 'escenic-api/objects/section'
+require_relative 'escenic-api/payload/payload'
+require_relative 'escenic-api/payload/section'

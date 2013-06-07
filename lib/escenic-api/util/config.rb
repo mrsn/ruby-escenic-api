@@ -19,6 +19,9 @@ module Escenic
       self.endpoint     = nil
       self.base_model   = nil
 
+      def self.http_ready?
+        not (Escenic::API::Config.user.nil? || Escenic::API::Config.pass.nil? || Escenic::API::Config.base_url.nil?)
+      end
     end
 
   end
