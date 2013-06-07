@@ -20,6 +20,10 @@ module Escenic
         Escenic::API::Root.init
       end
 
+      def content_item(options = {})
+        Escenic::API::ContentItem.init(options)
+      end
+
     end
 
   end

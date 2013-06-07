@@ -30,6 +30,11 @@ module Escenic
       add_method :put,      '/section/:id/delete',        as: 'delete_section_confirm'
       add_method :get,      '/section/:id/subsections',   as: 'get_subsections'
       add_method :get,      '/section/ROOT/subsections',  as: 'get_root'
+      add_method :post,     '/section/:id/content-items', as: 'create_content_item'
+      add_method :get,      '/content/:id',               as: 'get_content_item'
+      add_method :get_raw,  '/content/:id',               as: 'get_content_item_xml'
+      add_method :put,      '/content/:id',               as: 'update_content_item'
+      add_method :delete,   '/content/:id',               as: 'delete_content_item'
     end
 
   end

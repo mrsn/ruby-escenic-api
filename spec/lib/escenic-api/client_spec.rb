@@ -68,7 +68,7 @@ describe Escenic::API::Client do
       section.should be_an_instance_of(Escenic::API::Section)
     end
 
-    it 'returns an Net::HTTPNoContent when a section is deleted' do
+    it 'returns true when a section is deleted' do
       section = @client.section(
           sectionName:   "delete section test #{@time}",
           uniqueName:    "delete_section_test_#{@time}",
@@ -86,7 +86,7 @@ describe Escenic::API::Client do
       section.should be_an_instance_of(Escenic::API::Section)
     end
 
-    it 'returns true when a section is updated' do
+    it 'returns Escenic::API::Section when a section is updated' do
       section = @client.section(
           sectionName:   "update section test #{@time}",
           uniqueName:    "update_section_test_#{@time}",
@@ -95,12 +95,63 @@ describe Escenic::API::Client do
       section.update('sectionName' => "this name changed #{@time}").should be_an_instance_of(Escenic::API::Section)
     end
 
+    it 'returns true when a section is updated with a new field' do
+      section = @client.section(
+          sectionName:    "new field test #{@time}",
+          uniqueName:     "new_field_test_#{@time}",
+          directoryName:  "new_field_test_#{@time}"
+      )
+      section.update(
+          new_field: "agreement info #{@time}",
+      ).should be_an_instance_of(Escenic::API::Section)
+    end
+
+
   end
 
   describe '#root_section' do
     it 'returns a Escenic::API::Section' do
       @client.root.should be_an_instance_of(Escenic::API::Root)
     end
+  end
+
+  describe '#content_item' do
+    it 'returns an Escenic::API::ContentItem if given title and type' do
+      section_id = @section.content.entry.identifier
+      @client.content_item(
+          title: 'Create Content Item Spec Test',
+          type: 'Event',
+          body: 'blah blah body blah blah',
+          section_id: section_id
+      ).should be_an_instance_of(Escenic::API::ContentItem)
+    end
+
+    it 'returns true when a content item is updated' do
+      section_id = @section.content.entry.identifier
+      content_item = @client.content_item(
+          title: 'Update Content Item Spec Test',
+          type: 'Event',
+          body: 'blah blah body blah blah',
+          description: 'description',
+          section_id: section_id
+      )
+      content_item.update(
+          body: "this body has been updated #{@time}",
+          description: "description update #{@time}"
+      ).should be_an_instance_of(Escenic::API::ContentItem)
+    end
+
+    it 'returns true when a content item is deleted' do
+      section_id = @section.content.entry.identifier
+      content_item = @client.content_item(
+          title: 'Delete Content Item Spec Test',
+          type: 'Event',
+          body: 'blah blah body blah blah',
+          section_id: section_id
+      )
+      content_item.delete?.should equal(true)
+    end
+
   end
 
   after do

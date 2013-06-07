@@ -84,7 +84,7 @@ module Escenic
 
         options.each do |k, value|
           key = k.to_s
-          field = payload.xpath('//vdf:field[@name = "com.escenic.' + key + '"]', namespace).children
+          field = builder.xpath('//vdf:field[@name = "com.escenic.' + key + '"]', namespace).children
           if field.count == 0
             # add the field to the xml
             vdf_field = Nokogiri::XML::Node.new('vdf:field', builder)
@@ -94,7 +94,7 @@ module Escenic
             vdf_field.add_child(vdf_value)
             payload.children.first.add_previous_sibling(vdf_field)
           else
-            field.xpath('//vdf:value', namespace).children.first.content = value
+            field.first.content = value
           end
         end
         builder.to_xml
