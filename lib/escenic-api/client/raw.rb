@@ -22,6 +22,7 @@ module Escenic
         connection.send(method, url, options)
       end
 
+      # section
       add_method :post,     '/section',                   as: 'create_section'
       add_method :get,      '/section/:id',               as: 'get_section'
       add_method :get_raw,  '/section/:id',               as: 'get_section_xml'
@@ -30,11 +31,20 @@ module Escenic
       add_method :put,      '/section/:id/delete',        as: 'delete_section_confirm'
       add_method :get,      '/section/:id/subsections',   as: 'get_subsections'
       add_method :get,      '/section/ROOT/subsections',  as: 'get_root'
+
+      # content item
       add_method :post,     '/section/:id/content-items', as: 'create_content_item'
       add_method :get,      '/content/:id',               as: 'get_content_item'
       add_method :get_raw,  '/content/:id',               as: 'get_content_item_xml'
       add_method :put,      '/content/:id',               as: 'update_content_item'
       add_method :delete,   '/content/:id',               as: 'delete_content_item'
+
+      # person
+      add_method :post,     '/person',                    as: 'create_person'
+      add_method :get,      '/person/:id',                as: 'get_person'
+      add_method :get_raw,  '/person/:id',                as: 'get_person_xml'
+      add_method :put,      '/person/:id',                as: 'update_person'
+      add_method :delete,   '/person/:id',                as: 'delete_person'
     end
 
   end

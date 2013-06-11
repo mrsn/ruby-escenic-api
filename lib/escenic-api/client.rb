@@ -24,6 +24,9 @@ module Escenic
         Escenic::API::ContentItem.init(options)
       end
 
+      def person(options = {})
+        Escenic::API::Person.init(options)
+      end
     end
 
   end
