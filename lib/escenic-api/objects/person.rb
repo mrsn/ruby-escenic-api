@@ -23,7 +23,6 @@ module Escenic
       end
 
       def update(options={})
-        id       = @content.entry.identifier
         options  = options.merge({id: id, verb: :update})
         payload  = Escenic::API::PersonPayload.new(options)
         response = Escenic::API::client.endpoints.update_person(id: id, body: payload.xml)
@@ -36,7 +35,6 @@ module Escenic
       end
 
       def delete?
-        id       = @content.entry.identifier
         response = Escenic::API::client.endpoints.delete_person(id: id)
 
         if response.instance_of?(Net::HTTPNoContent)

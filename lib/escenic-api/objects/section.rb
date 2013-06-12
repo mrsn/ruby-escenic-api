@@ -24,7 +24,6 @@ module Escenic
       end
 
       def update(options={})
-        id       = @content.entry.identifier
         options  = options.merge({id: id, verb: :update})
         payload  = Escenic::API::SectionPayload.new(options)
         response = Escenic::API::client.endpoints.update_section(id: id, body: payload.xml)
@@ -37,7 +36,6 @@ module Escenic
       end
 
       def delete?
-        id       = @content.entry.identifier
         options  = {id: id, verb: :delete}
         payload  = Escenic::API::SectionPayload.new(options)
         response = Escenic::API::client.endpoints.delete_confirm_section(id: id, body: payload.xml)
@@ -55,7 +53,7 @@ module Escenic
 
       # Return a list of subsections for a section
       def subsections
-        Escenic::API::client.get_subsections(id: self.content.entry.identifier)
+        Escenic::API::client.get_subsections(id: id)
       end
     end
 
