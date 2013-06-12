@@ -14,6 +14,33 @@ module Escenic
         self.new(response)
       end
 
+      def self.perform_create(payload_class, options)
+        verify_options(options) if self.respond_to? :verify_options
+
+        section_id = options.delete(:section_id)
+        call_options = {}
+        call_options[:id] = section_id if section_id
+
+        options[:verb] = :create
+        call_options[:body] = payload_class.new(options).xml
+
+        response       = call_client_method(:create, call_options)
+        id             = response.header['location'].split('/').last
+        self.for_id(id)
+      end
+
+      def perform_update(payload_class, object_class, options={})
+        options  = options.merge({id: id, verb: :update})
+        payload  = payload_class.new(options)
+        response = call_client_method(:update, {id: id, body: payload.xml})
+
+        if response.instance_of?(Net::HTTPNoContent)
+          object_class.for_id(id)
+        else
+          raise Escenic::API::Error 'update failed'
+        end
+      end
+
       def id
         @content.entry.identifier
       end

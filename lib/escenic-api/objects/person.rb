@@ -3,28 +3,19 @@ module Escenic
 
     class Person < Escenic::API::Object
       def self.create(options={})
+        perform_create(Escenic::API::PersonPayload, options)
+      end
+
+      def self.verify_options(options)
         raise Escenic::API::Error::Params.new 'surname is required to create a person.' if options[:surName].nil?
-
-        # Create payload
-        options[:verb] = :create
-        payload        = Escenic::API::PersonPayload.new(options)
-
-        # Create the person
-        response       = call_client_method(:create, {body: payload.xml})
-        id             = response.header['location'].split('/').last
-        self.for_id(id) # return a copy of self, re-fetched from server.
       end
 
       def update(options={})
-        options  = options.merge({id: id, verb: :update})
-        payload  = Escenic::API::PersonPayload.new(options)
-        response = call_client_method(:update, {id: id, body: payload.xml})
-
-        if response.instance_of?(Net::HTTPNoContent)
-          Escenic::API::Person.for_id(id)
-        else
-          raise Escenic::API::Error 'update failed.'
-        end
+        perform_update(
+            Escenic::API::PersonPayload,
+            Escenic::API::Person,
+            options
+        )
       end
 
       def delete?
