@@ -37,11 +37,11 @@ module Escenic
       add_method :get,      '/section/ROOT/subsections',  as: 'get_root'
 
       # content item
-      add_method :post,     '/section/:id/content-items', as: 'create_content_item'
-      add_method :get,      '/content/:id',               as: 'get_content_item'
-      add_method :get_raw,  '/content/:id',               as: 'get_xml_content_item'
-      add_method :put,      '/content/:id',               as: 'update_content_item'
-      add_method :delete,   '/content/:id',               as: 'delete_content_item'
+      add_method :post,     '/section/:id/content-items', as: 'create_contentitem'
+      add_method :get,      '/content/:id',               as: 'get_contentitem'
+      add_method :get_raw,  '/content/:id',               as: 'get_xml_contentitem'
+      add_method :put,      '/content/:id',               as: 'update_contentitem'
+      add_method :delete,   '/content/:id',               as: 'delete_contentitem'
 
       # person
       add_method :post,     '/person',                    as: 'create_person'

@@ -9,12 +9,6 @@ module Escenic
         process_field_names
       end
 
-      def self.for_id(id)
-        raise 'id must not be nil' if id.nil?
-        response = Escenic::API::client.endpoints.get_spec(id: id)
-        self.new(response)
-      end
-
       def process_field_names
         @fields = []
         content.model.schema.fielddef.each { |hash|
