@@ -3,7 +3,7 @@ module Escenic
 
     class Root < Escenic::API::Object
       def self.init
-        response = Escenic::API::client.raw.get_root
+        response = Escenic::API::client.endpoints.get_root
         self.new(response)
       end
 

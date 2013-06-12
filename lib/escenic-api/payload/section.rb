@@ -44,7 +44,7 @@ module Escenic
       end
 
       def update(options={})
-        response  = Escenic::API::client.raw.get_xml_section(id: options.delete(:id))
+        response  = Escenic::API::client.endpoints.get_xml_section(id: options.delete(:id))
         update_fields(response, options)
       end
 

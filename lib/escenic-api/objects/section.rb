@@ -4,7 +4,7 @@ module Escenic
     class Section < Escenic::API::Object
       def self.for_id(id)
         raise 'id must not be nil' if id.nil?
-        response = Escenic::API::client.raw.get_section(id: id)
+        response = Escenic::API::client.endpoints.get_section(id: id)
         self.new(response)
       end
 
@@ -18,7 +18,7 @@ module Escenic
         payload        = Escenic::API::SectionPayload.new(options)
 
         # Create the section
-        response       = Escenic::API::client.raw.create_section(body: payload.xml)
+        response       = Escenic::API::client.endpoints.create_section(body: payload.xml)
         id             = response.header['location'].split('/').last
         self.for_id(id) # return a copy of self, re-fetched from server.
       end
@@ -27,7 +27,7 @@ module Escenic
         id       = @content.entry.identifier
         options  = options.merge({id: id, verb: :update})
         payload  = Escenic::API::SectionPayload.new(options)
-        response = Escenic::API::client.raw.update_section(id: id, body: payload.xml)
+        response = Escenic::API::client.endpoints.update_section(id: id, body: payload.xml)
 
         if response.instance_of?(Net::HTTPNoContent)
           Escenic::API::Section.for_id(id)
@@ -40,7 +40,7 @@ module Escenic
         id       = @content.entry.identifier
         options  = {id: id, verb: :delete}
         payload  = Escenic::API::SectionPayload.new(options)
-        response = Escenic::API::client.raw.delete_confirm_section(id: id, body: payload.xml)
+        response = Escenic::API::client.endpoints.delete_confirm_section(id: id, body: payload.xml)
 
         if response.instance_of?(Net::HTTPNoContent)
           @content.each_key do |k|

@@ -11,7 +11,7 @@ module Escenic
 
       def self.for_id(id)
         raise 'id must not be nil' if id.nil?
-        response = Escenic::API::client.raw.get_spec(id: id)
+        response = Escenic::API::client.endpoints.get_spec(id: id)
         self.new(response)
       end
 

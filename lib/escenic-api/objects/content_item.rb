@@ -4,7 +4,7 @@ module Escenic
     class ContentItem < Escenic::API::Object
       def self.for_id(id)
           raise 'id must not be nil' if id.nil?
-          response = Escenic::API::client.raw.get_content_item(id: id)
+          response = Escenic::API::client.endpoints.get_content_item(id: id)
           self.new(response)
       end
 
@@ -20,7 +20,7 @@ module Escenic
         payload         = Escenic::API::ContentItemPayload.new(options)
 
         # Create the content item
-        response  = Escenic::API::client.raw.create_content_item(body: payload.xml, id: section_id)
+        response  = Escenic::API::client.endpoints.create_content_item(body: payload.xml, id: section_id)
         id        = response.header['location'].split('/').last
         self.for_id(id)
       end
@@ -29,7 +29,7 @@ module Escenic
         id        = content.entry.identifier
         options   = options.merge({id: id, verb: :update})
         payload   = Escenic::API::ContentItemPayload.new(options)
-        response  = Escenic::API::client.raw.update_content_item(id: id, body: payload.xml)
+        response  = Escenic::API::client.endpoints.update_content_item(id: id, body: payload.xml)
 
         if response.instance_of?(Net::HTTPNoContent)
           Escenic::API::ContentItem.for_id(id)
@@ -41,7 +41,7 @@ module Escenic
 
       def delete?
         id        = content.entry.identifier
-        response  = Escenic::API::client.raw.delete_content_item(id: id)
+        response  = Escenic::API::client.endpoints.delete_content_item(id: id)
 
         if response.instance_of?(Net::HTTPOK)
           content.each_key do |k|

@@ -2,10 +2,10 @@ module Escenic
   module API
 
     class Client
-      attr_reader :raw
+      attr_reader :endpoints
 
       def initialize
-        @raw = Escenic::API::Raw.new
+        @endpoints = Escenic::API::Endpoints.new
       end
 
       def root

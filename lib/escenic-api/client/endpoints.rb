@@ -1,7 +1,7 @@
 module Escenic
   module API
 
-    class Raw
+    class Endpoints
       attr_reader :connection
 
       def initialize

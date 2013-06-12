@@ -5,7 +5,7 @@ module Escenic
 
       def self.for_id(id)
         raise 'id must not be nil' if id.nil?
-        response = Escenic::API::client.raw.get_person(id: id)
+        response = Escenic::API::client.endpoints.get_person(id: id)
         self.new(response)
       end
 
@@ -17,7 +17,7 @@ module Escenic
         payload        = Escenic::API::PersonPayload.new(options)
 
         # Create the person
-        response       = Escenic::API::client.raw.create_person(body: payload.xml)
+        response       = Escenic::API::client.endpoints.create_person(body: payload.xml)
         id             = response.header['location'].split('/').last
         self.for_id(id) # return a copy of self, re-fetched from server.
       end
@@ -26,7 +26,7 @@ module Escenic
         id       = @content.entry.identifier
         options  = options.merge({id: id, verb: :update})
         payload  = Escenic::API::PersonPayload.new(options)
-        response = Escenic::API::client.raw.update_person(id: id, body: payload.xml)
+        response = Escenic::API::client.endpoints.update_person(id: id, body: payload.xml)
 
         if response.instance_of?(Net::HTTPNoContent)
           Escenic::API::Person.for_id(id)
@@ -37,7 +37,7 @@ module Escenic
 
       def delete?
         id       = @content.entry.identifier
-        response = Escenic::API::client.raw.delete_person(id: id)
+        response = Escenic::API::client.endpoints.delete_person(id: id)
 
         if response.instance_of?(Net::HTTPNoContent)
           @content.each_key do |k|

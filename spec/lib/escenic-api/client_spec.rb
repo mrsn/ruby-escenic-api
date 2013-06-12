@@ -8,9 +8,9 @@ describe Escenic::API::Client do
   end
 
   describe '#raw' do
-    it 'should be an instance of Escenic::API::Raw' do
-      conn = @client.raw
-      conn.should be_an_instance_of(Escenic::API::Raw)
+    it 'should be an instance of Escenic::API::Endpoints' do
+      conn = @client.endpoints
+      conn.should be_an_instance_of(Escenic::API::Endpoints)
     end
   end
 
