@@ -17,6 +17,9 @@ module Escenic
       def handle_verb(options)
         if self.respond_to? @verb
           @xml = self.send(@verb, options)
+          #if [:create, :update].include? @verb
+          #  spec.validate xml
+          #end
         else
           raise Escenic::API::Error.new('Invalid verb: ' + @verb)
         end
@@ -86,6 +89,11 @@ module Escenic
         end
         builder.to_xml
       end
+
+      def spec
+        @spec ||= Escenic::API::client.spec(id: @model_type)
+      end
+
     end
   end
 end

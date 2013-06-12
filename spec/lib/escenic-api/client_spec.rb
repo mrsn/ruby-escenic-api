@@ -194,6 +194,25 @@ describe Escenic::API::Client do
       person.delete?.should equal(true)
     end
 
+    describe '#spec' do
+
+      it 'returns a specification for an person type' do
+        spec = @client.spec(
+            id: 'com.escenic.person'
+        )
+        spec.should be_an_instance_of(Escenic::API::Spec)
+        spec.fields.length.should eq(11)
+      end
+
+      it 'returns a specification for an section type' do
+        spec = @client.spec(
+            id: 'com.escenic.section'
+        )
+        spec.should be_an_instance_of(Escenic::API::Spec)
+        spec.fields.length.should eq(13)
+      end
+
+    end
   end
   after do
     @section.delete?

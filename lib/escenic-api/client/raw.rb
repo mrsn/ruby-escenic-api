@@ -45,6 +45,9 @@ module Escenic
       add_method :get_raw,  '/person/:id',                as: 'get_person_xml'
       add_method :put,      '/person/:id',                as: 'update_person'
       add_method :delete,   '/person/:id',                as: 'delete_person'
+
+      # spec
+      add_method :get,      '/model/:id',                 as: 'get_spec'
     end
 
   end

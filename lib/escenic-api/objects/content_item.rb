@@ -9,7 +9,7 @@ module Escenic
           self.create(options)
         elsif options[:id] && options.count == 1
           # Try to retrieve a content item.
-          response = Escenic::API::client.raw.get_content_item(:id => options[:id])
+          response = Escenic::API::client.raw.get_content_item(id: options[:id])
           self.new(response)
         else
           # Missing params.
