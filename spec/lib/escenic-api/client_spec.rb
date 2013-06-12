@@ -4,7 +4,6 @@ describe Escenic::API::Client do
 
 
   before do
-    @time    = Time.now.to_i
     @client  = Escenic::API::client
   end
 

@@ -26,7 +26,7 @@ module Escenic
       end
 
       def update(options={})
-        id        = @content.entry.identifier
+        id        = content.entry.identifier
         options   = options.merge({id: id, verb: :update})
         payload   = Escenic::API::ContentItemPayload.new(options)
         response  = Escenic::API::client.raw.update_content_item(id: id, body: payload.xml)
@@ -40,12 +40,12 @@ module Escenic
       end
 
       def delete?
-        id        = @content.entry.identifier
+        id        = content.entry.identifier
         response  = Escenic::API::client.raw.delete_content_item(id: id)
 
         if response.instance_of?(Net::HTTPOK)
-          @content.each do |k,v|
-            @content.delete(k.to_sym)
+          content.each_key do |k|
+            content.delete(k.to_sym)
           end
           true
         else

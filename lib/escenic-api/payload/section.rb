@@ -11,8 +11,6 @@ module Escenic
         handle_verb options
       end
 
-
-
       def create(options={})
         options = {vdf_field_prefix: 'com.escenic.'}.merge(options)
         api_xml_base(options) { |xml|
@@ -46,7 +44,7 @@ module Escenic
       end
 
       def update(options={})
-        response  = Escenic::API::client.raw.get_section_xml(id: options.delete(:id))
+        response  = Escenic::API::client.raw.get_xml_section(id: options.delete(:id))
         update_fields(response, options)
       end
 

@@ -8,7 +8,6 @@ module Escenic
         self.new(response)
       end
 
-
       def self.create(options={})
         raise Escenic::API::Error::Params.new 'sectionName, uniqueName, and directoryName required to create a section.' if options[:sectionName].nil? ||
             options[:uniqueName].nil? ||
@@ -41,7 +40,7 @@ module Escenic
         id       = @content.entry.identifier
         options  = {id: id, verb: :delete}
         payload  = Escenic::API::SectionPayload.new(options)
-        response = Escenic::API::client.raw.delete_section_confirm(id: id, body: payload.xml)
+        response = Escenic::API::client.raw.delete_confirm_section(id: id, body: payload.xml)
 
         if response.instance_of?(Net::HTTPNoContent)
           @content.each_key do |k|

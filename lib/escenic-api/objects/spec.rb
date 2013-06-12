@@ -17,7 +17,7 @@ module Escenic
 
       def process_field_names
         @fields = []
-        @content.model.schema.fielddef.each { |hash|
+        content.model.schema.fielddef.each { |hash|
           @fields.push(hash.attributes.name)
         }
       end
@@ -26,12 +26,14 @@ module Escenic
         payload_hash = Hashie::Mash.new(Hash.from_xml(xml))
 
         payload_hash.entry.content.payload.field.each { |field|
-          if field.respond_to?(:attributes) && !@model_type.nil?
+          if field.respond_to?(:attributes) && !model_type.nil?
             field_name = field.attributes.name
-            warn "Field #{field_name} is not in #{@model_type} spec!" unless @fields.include? field_name
+            warn "Field #{field_name} is not in #{model_type} spec!" unless fields.include? field_name
           end
         }
       end
+
+
     end
 
   end
