@@ -112,7 +112,7 @@ module Escenic
       def handle_error(response)
         raise Escenic::API::Error::ConnectionFailed if !response
         error = error_lookup response
-        raise error if error
+        raise error.new(response.body) if error
       end
 
       # error_lookup returns errors to throw, or nil if no error occurred.
@@ -124,12 +124,12 @@ module Escenic
             Escenic::API::Error::Unauthorized
           when 403
             #TODO Parse response and display useful message.
-            Escenic::API::Error::Forbidden.new(response.body)
+            Escenic::API::Error::Forbidden
           when 404
             Escenic::API::Error::NotFound
           when 400, 406
             #TODO Parse response and display useful message.
-            Escenic::API::Error.new(response.body)
+            Escenic::API::Error
           when 300..302, 304..399
             Escenic::API::Error::Redirect
           when 500..599

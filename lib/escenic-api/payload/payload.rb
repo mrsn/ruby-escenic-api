@@ -10,7 +10,7 @@ module Escenic
         @publication  = Escenic::API::Config.publication
         @base_model   = Escenic::API::Config.base_model
         @parent_id    = (options.delete(:parentId) || Escenic::API::client.root.content.feed.entry.identifier).to_s
-        @parent_title = (options.delete(:parentTitle) || Escenic::API::client.section(id: @parent_id).content.entry.title)
+        @parent_title = (options.delete(:parentTitle) || Escenic::API::Section.for_id(@parent_id).content.entry.title)
         @verb         = options.delete(:verb).to_sym || raise(Escenic::API::Error::Params.new ':verb is required.')
       end
 

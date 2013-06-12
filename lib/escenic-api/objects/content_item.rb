@@ -2,19 +2,10 @@ module Escenic
   module API
 
     class ContentItem < Escenic::API::Object
-
-      def self.init(options={})
-        if options[:id].nil?
-          # Try to create a content item.
-          self.create(options)
-        elsif options[:id] && options.count == 1
-          # Try to retrieve a content item.
-          response = Escenic::API::client.raw.get_content_item(id: options[:id])
+      def self.for_id(id)
+          raise 'id must not be nil' if id.nil?
+          response = Escenic::API::client.raw.get_content_item(id: id)
           self.new(response)
-        else
-          # Missing params.
-          raise Escenic::API::Error::Params.new 'Content Item ID required.'
-        end
       end
 
       def self.create(options={})
@@ -31,7 +22,7 @@ module Escenic
         # Create the content item
         response  = Escenic::API::client.raw.create_content_item(body: payload.xml, id: section_id)
         id        = response.header['location'].split('/').last
-        self.init({id: id})
+        self.for_id(id)
       end
 
       def update(options={})
@@ -41,7 +32,7 @@ module Escenic
         response  = Escenic::API::client.raw.update_content_item(id: id, body: payload.xml)
 
         if response.instance_of?(Net::HTTPNoContent)
-          Escenic::API::ContentItem.init(id: id)
+          Escenic::API::ContentItem.for_id(id)
         else
           raise Escenic::API::Error 'update failed'
         end

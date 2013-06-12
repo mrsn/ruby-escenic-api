@@ -1,25 +1,21 @@
-require 'spec_helper'
+require_relative '../../spec_helper'
 
 describe Escenic::API::Client do
-
-  before do
-    @time    = Time.now.to_i
-    @client  = Escenic::API::client
-    @section = @client.section(
-        sectionName:   "new section #{@time}",
-        uniqueName:    "new_section_#{@time}",
-        directoryName: "new_section_#{@time}"
-    )
-  end
-
-
   describe '#person' do
-
-    it 'returns true when a person is updated' do
-      person = @client.person(
+    it 'returns an Escenic::API::Person if given surname' do
+      person = Escenic::API::Person.create(
           firstName: 'John',
           surName:   'Doe'
       )
+      person.should be_an_instance_of(Escenic::API::Person)
+    end
+
+    it 'returns true when a person is updated' do
+      person = Escenic::API::Person.create(
+          firstName: 'John',
+          surName:   'Doe'
+      )
+      person.should be_an_instance_of(Escenic::API::Person)
       person = person.update(
           postalCode: '00001'
       )
@@ -37,9 +33,12 @@ describe Escenic::API::Client do
       fail "couldn't find field postalCode" if !pass
     end
 
+    it 'returns true when a person is deleted' do
+      person = Escenic::API::Person.create(
+          firstName: 'John',
+          surName:   'Doe'
+      )
+      person.delete?.should equal(true)
+    end
   end
-  after do
-    @section.delete?
-  end
-
 end

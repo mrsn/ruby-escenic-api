@@ -3,18 +3,10 @@ module Escenic
 
     class Person < Escenic::API::Object
 
-      def self.init(options={})
-        if options[:id].nil?
-          # Try to create a person.
-          self.create(options)
-        elsif options[:id] && options.count == 1
-          # Try to retrieve a person.
-          response = Escenic::API::client.raw.get_person(id: options[:id])
-          self.new(response)
-        else
-          # Missing params.
-          raise Escenic::API::Error::Params.new 'init can only create a new or retrieve an old entry.'
-        end
+      def self.for_id(id)
+        raise 'id must not be nil' if id.nil?
+        response = Escenic::API::client.raw.get_person(id: id)
+        self.new(response)
       end
 
       def self.create(options={})
@@ -27,7 +19,7 @@ module Escenic
         # Create the person
         response       = Escenic::API::client.raw.create_person(body: payload.xml)
         id             = response.header['location'].split('/').last
-        self.init({id: id}) # return a copy of self, re-fetched from server.
+        self.for_id(id) # return a copy of self, re-fetched from server.
       end
 
       def update(options={})
@@ -37,7 +29,7 @@ module Escenic
         response = Escenic::API::client.raw.update_person(id: id, body: payload.xml)
 
         if response.instance_of?(Net::HTTPNoContent)
-          Escenic::API::Person.init({id: id})
+          Escenic::API::Person.for_id(id)
         else
           raise Escenic::API::Error 'update failed.'
         end

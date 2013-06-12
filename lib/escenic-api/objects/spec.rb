@@ -9,13 +9,9 @@ module Escenic
         process_field_names
       end
 
-      def self.init(options={})
-        if options[:id].nil?
-          raise 'id is missing from the request.'
-        else
-          response = Escenic::API::client.raw.get_spec(options)
-        end
-
+      def self.for_id(id)
+        raise 'id must not be nil' if id.nil?
+        response = Escenic::API::client.raw.get_spec(id: id)
         self.new(response)
       end
 

@@ -2,20 +2,12 @@ module Escenic
   module API
 
     class Section < Escenic::API::Object
-
-      def self.init(options={})
-        if options[:id].nil?
-          # Try to create a section.
-          self.create(options)
-        elsif options[:id] && options.count == 1
-          # Try to retrieve a section.
-          response = Escenic::API::client.raw.get_section(id: options[:id])
-          self.new(response)
-        else
-          # Missing params.
-          raise Escenic::API::Error::Params.new 'Section ID or name, unique name, and directory required.'
-        end
+      def self.for_id(id)
+        raise 'id must not be nil' if id.nil?
+        response = Escenic::API::client.raw.get_section(id: id)
+        self.new(response)
       end
+
 
       def self.create(options={})
         raise Escenic::API::Error::Params.new 'sectionName, uniqueName, and directoryName required to create a section.' if options[:sectionName].nil? ||
@@ -29,7 +21,7 @@ module Escenic
         # Create the section
         response       = Escenic::API::client.raw.create_section(body: payload.xml)
         id             = response.header['location'].split('/').last
-        self.init({id: id}) # return a copy of self, re-fetched from server.
+        self.for_id(id) # return a copy of self, re-fetched from server.
       end
 
       def update(options={})
@@ -39,7 +31,7 @@ module Escenic
         response = Escenic::API::client.raw.update_section(id: id, body: payload.xml)
 
         if response.instance_of?(Net::HTTPNoContent)
-          Escenic::API::Section.init({id: id})
+          Escenic::API::Section.for_id(id)
         else
           raise Escenic::API::Error 'update failed.'
         end

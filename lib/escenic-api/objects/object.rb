@@ -8,6 +8,9 @@ module Escenic
         @content = Hashie::Mash.new(content)
       end
 
+      def id
+        @content.entry.identifier
+      end
     end
 
   end

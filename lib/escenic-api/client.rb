@@ -12,24 +12,8 @@ module Escenic
         @raw = Escenic::API::Raw.new
       end
 
-      def section(options = {})
-        Escenic::API::Section.init(options)
-      end
-
       def root
         Escenic::API::Root.init
-      end
-
-      def spec(options = {})
-        Escenic::API::Spec.init(options)
-      end
-
-      def content_item(options = {})
-        Escenic::API::ContentItem.init(options)
-      end
-
-      def person(options = {})
-        Escenic::API::Person.init(options)
       end
     end
 
