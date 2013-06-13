@@ -21,19 +21,7 @@ module Escenic
       end
 
       def delete?
-        options  = {id: id, verb: :delete}
-        payload  = Escenic::API::SectionPayload.new(options)
-        response = call_client_method(:delete_confirm, {id: id, body: payload.xml})
-
-        if response.instance_of?(Net::HTTPNoContent)
-          @content.each_key do |k|
-            @content.delete(k.to_sym)
-          end
-          true
-        else
-          false
-        end
-
+        perform_delete_confirm(Escenic::API::SectionPayload, Net::HTTPNoContent)
       end
 
       # Return a list of subsections for a section

@@ -19,24 +19,10 @@ module Escenic
         )
       end
 
-
-
       def delete?
-        response = call_client_method(:delete, {id: id})
-
-        if response.instance_of?(Net::HTTPOK)
-          content.each_key do |k|
-            content.delete(k.to_sym)
-          end
-          true
-        else
-          false
-        end
-
+        perform_delete(Net::HTTPOK)
       end
-
     end
-
   end
 end
 

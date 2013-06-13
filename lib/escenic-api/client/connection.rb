@@ -91,7 +91,7 @@ module Escenic
       # @param [Map] options - settings for the request
       # @return [Net::HTTPResponse] response - response from server
       def do_request(options)
-        options  = {endpoints: false}.merge options
+        options  = {raw: false}.merge options
         get_response do
           Net::HTTP.start(options[:uri].host, options[:uri].port) do |http|
             http.request(options[:req], options[:body])

@@ -17,15 +17,15 @@ module Escenic
       def self.perform_create(payload_class, options)
         verify_options(options) if self.respond_to? :verify_options
 
-        section_id = options.delete(:section_id)
+        section_id   = options.delete(:section_id)
         call_options = {}
         call_options[:id] = section_id if section_id
 
-        options[:verb] = :create
+        options[:verb]      = :create
         call_options[:body] = payload_class.new(options).xml
 
-        response       = call_client_method(:create, call_options)
-        id             = response.header['location'].split('/').last
+        response = call_client_method(:create, call_options)
+        id       = response.header['location'].split('/').last
         self.for_id(id)
       end
 
@@ -38,6 +38,32 @@ module Escenic
           object_class.for_id(id)
         else
           raise Escenic::API::Error 'update failed'
+        end
+      end
+
+      def perform_delete(expected_response)
+        perform_delete_confirm nil, expected_response
+      end
+
+      def perform_delete_confirm(payload_class, expected_response)
+        call_options = {id: id}
+        client_method = :delete
+        unless payload_class.nil?
+          options  = {id: id, verb: :delete}
+          payload  = payload_class.new(options)
+          call_options[:body] = payload.xml
+          client_method = :delete_confirm
+        end
+
+        response = call_client_method(client_method, call_options)
+
+        if response.instance_of?(expected_response)
+          content.each_key do |k|
+            content.delete(k.to_sym)
+          end
+          true
+        else
+          false
         end
       end
 
