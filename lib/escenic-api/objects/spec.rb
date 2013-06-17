@@ -1,34 +1,39 @@
+require_relative '../document/spec_document'
+
 module Escenic
   module API
 
     class Spec < Escenic::API::Object
-      attr_reader :fields
+      attr_reader :fields, :spec_object
 
       def initialize(xml)
         super(xml)
-        process_field_names
+        parse_spec
       end
 
-      def process_field_names
-        @fields = []
-        content.model.schema.fielddef.each { |hash|
-          @fields.push(hash.attributes.name)
-        }
+      def parse_spec
+        spec = SpecDocument.new
+        spec_parser = Nokogiri::XML::SAX::Parser.new(spec)
+        spec_parser.parse(raw)
+        @fields = spec.fields
       end
 
-      def validate(xml)
-        payload_hash = Hashie::Mash.new(Hash.from_xml(xml))
+      def validate(payload)
+        xml = Nokogiri::XML::Document.parse(payload.xml)
 
-        payload_hash.entry.content.payload.field.each { |field|
-          if field.respond_to?(:attributes) && !model_type.nil?
-            field_name = field.attributes.name
-            warn "Field #{field_name} is not in #{model_type} spec!" unless fields.include? field_name
-          end
-        }
+        #payload_hash = Hashie::Mash.new(Hash.from_xml(xml))
+
+        namespaces = xml.collect_namespaces
+
+        names = xml.xpath('//vdf:field/@name', namespaces)
+        mismatches = []
+        names.each do |name|
+          mismatches.push(name) unless @fields.include? name.to_s
+        end
+        mismatches.each do |name|
+          warn "Field #{name} is not in spec!"
+        end
       end
-
-
     end
-
   end
 end

@@ -7,30 +7,15 @@ module Escenic
         raise Escenic::API::Error::Config unless Escenic::API::Config.http_ready?
       end
 
-      # http GET, returning a hash of the XML
-      # @param [String] url - the url to visit
-      # @param [Hash] options - the options for the request.
-      # @return [Hash] a hash of the response
-      def get(url, options={})
-        get_core(url, options).to_hash
-      end
-
-      # http GET, returning the raw body
-      # @param [String] url - the url to visit
-      # @param [Hash] options - the options for the request.
-      # @return [String] the body of the response
-      def get_raw(url, options = {})
-        get_core(url, options).body
-      end
-
-      # http GET core, performs actions needed by get and get_raw.
+      # http GET
       # @param [String] url - the url to visit
       # @param [Hash] options - the options for the request.
       # @return [HTTPResponse] a response object
-      def get_core(url, options = {})
+      def get(url, options = {})
         options = {http_class: Net::HTTP::Get}.merge options
         options = request_core url, options
-        do_request options
+        response = do_request options
+        response.body
       end
 
       # http request core, sets uri, and base request object

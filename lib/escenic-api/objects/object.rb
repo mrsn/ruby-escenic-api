@@ -2,16 +2,17 @@ module Escenic
   module API
 
     class Object
-      attr_accessor :content
+      attr_accessor :content, :raw
 
       def initialize(content)
-        @content = Hashie::Mash.new(content)
+        @raw = content
+        @content = Hashie::Mash.new(Hash.from_xml(@raw))
       end
 
       def self.for_id(id)
         raise 'id must not be nil' if id.nil?
-        response = call_client_method(:get, {id: id})
-        self.new(response)
+        content = call_client_method(:get, {id: id})
+        self.new(content)
       end
 
       def self.perform_create(payload_class, options)
