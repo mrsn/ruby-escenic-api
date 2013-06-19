@@ -3,7 +3,7 @@ module Escenic
 
     class Section < Escenic::API::Object
       def self.create(options={})
-        perform_create(Escenic::API::SectionPayload, options)
+        perform_create(Escenic::API::SectionPayload, {}, options)
       end
 
       def self.verify_options(options)
@@ -16,6 +16,7 @@ module Escenic
         perform_update(
             Escenic::API::SectionPayload,
             Escenic::API::Section,
+            {},
             options
         )
       end

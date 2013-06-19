@@ -8,18 +8,24 @@ module Escenic
         @connection = Escenic::API::Connection.new
       end
 
-      def self.add_method(method, action, options = {})
+      def self.add_method(method, action, method_config = {})
         self.class_eval <<-STR
-          def #{options[:as] || action}(options = {})
-            request(:#{method}, "#{action}", options)
+          def #{method_config[:as] || action}(headers = {}, options = {})
+            request(:#{method}, "#{action}", headers, options)
           end
         STR
       end
 
-      def request(method, action, options = {})
+      def request(method, action, headers, options = {})
         action.sub! ':id', options.delete(:id).to_s if action.match ':id'
-        url = Escenic::API::Config.endpoint + action
-        connection.send(method, url, options)
+
+        case options[:endpoint_type]
+          when :binary
+            url = Escenic::API::Config.endpoint_binary + action
+          else
+            url = Escenic::API::Config.endpoint + action
+        end
+        connection.send(method, url, headers, options)
       end
 
       # section
@@ -49,6 +55,16 @@ module Escenic
 
       # spec
       add_method :get,      '/model/:id',                 as: 'get_spec'
+
+      # binary
+      add_method :post,     '/binary/:id',                as: 'create_binary' # id means object type, e.g. picture
+
+      # picture
+      # binary sub-types don't have post, it's handled by the binary upload endpoint.
+      add_method :get,      '/content/:id',               as: 'get_picture'
+      add_method :put,      '/content/:id',               as: 'update_picture'
+      add_method :delete,   '/content/:id',               as: 'delete_picture'
+
     end
 
   end

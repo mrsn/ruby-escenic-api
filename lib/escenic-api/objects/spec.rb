@@ -19,7 +19,7 @@ module Escenic
       end
 
       def validate(payload)
-        xml = Nokogiri::XML::Document.parse(payload.xml)
+        xml = Nokogiri::XML::Document.parse(payload.body)
 
         #payload_hash = Hashie::Mash.new(Hash.from_xml(xml))
 

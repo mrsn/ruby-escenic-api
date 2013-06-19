@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../spec_helper'
 
 describe Escenic::API::ContentItem do
 
@@ -33,8 +33,8 @@ describe Escenic::API::ContentItem do
         section_id:  @section_id
     )
     content_item.update(
-        body:        "this body has been updated #{@time}",
-        description: "description update #{@time}"
+        #body:        "this body has been updated #{@time}",
+  #      description: "description update #{@time}"
     ).should be_an_instance_of(Escenic::API::ContentItem)
   end
 

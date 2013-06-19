@@ -4,6 +4,7 @@ module Escenic
     class PersonPayload < Escenic::API::Payload
       def initialize(options={})
         options[:type] = 'com.escenic.person'
+        options[:prefixed] = true
         super options
         handle_verb options
       end
@@ -15,7 +16,7 @@ module Escenic
 
 
       def update(options={})
-        response = Escenic::API::client.endpoints.get_person(id: options.delete(:id))
+        response = Escenic::API::client.endpoints.get_person({}, id: options.delete(:id))
         update_fields(response, options)
       end
     end

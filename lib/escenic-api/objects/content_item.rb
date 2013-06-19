@@ -3,7 +3,7 @@ module Escenic
 
     class ContentItem < Escenic::API::Object
       def self.create(options={})
-        perform_create(Escenic::API::ContentItemPayload, options)
+        perform_create(Escenic::API::ContentItemPayload, {}, options)
       end
 
       def verify_options(options)
@@ -15,6 +15,7 @@ module Escenic
         perform_update(
             Escenic::API::ContentItemPayload,
             Escenic::API::ContentItem,
+            {},
             options
         )
       end

@@ -1,6 +1,9 @@
 module Escenic
   module API
 
+    class RequestInfo < Struct.new(:http_method, :uri, :headers, :content)
+    end
+
     class Connection
 
       def initialize
@@ -9,77 +12,95 @@ module Escenic
 
       # http GET
       # @param [String] url - the url to visit
-      # @param [Hash] options - the options for the request.
+      # @param [hash] headers - the headers for the request.
+      # @param [Hash] options - the options of the request.
       # @return [HTTPResponse] a response object
-      def get(url, options = {})
-        options = {http_class: Net::HTTP::Get}.merge options
-        options = request_core url, options
-        response = do_request options
+      def get(url, headers = {}, options={})
+        request_info = RequestInfo.new(
+            Net::HTTP::Get,
+            uri_from_url(url),
+            headers,
+            options[:body]
+        )
+        response     = do_request request_info
         response.body
       end
 
-      # http request core, sets uri, and base request object
-      # @param [String] url - the url to visit
-      # @param [Hash] options - the options for the request.
-      # @return [Hash] a hash of the response
-      def request_core(url, options)
-        options       = {uri: URI.parse(url)}.merge options
-        options[:req] = base_request options
-        options
+      def uri_from_url(url)
+        URI.parse(url)
       end
 
       # http DELETE, deletes an entry
       # @param [String] url - the url to visit
-      # @param [Hash] options - the options for the request.
+      # @param [hash] headers - the headers for the request.
+      # @param [Hash] options - the options of the request.
       # @return [Hash] a hash of the response
-      def delete(url, options = {})
-        options = {http_class: Net::HTTP::Delete}.merge options
-        options = request_core url, options
-        do_request(options).to_hash
+      def delete(url, headers = {}, options = {})
+        request_info = RequestInfo.new(
+            Net::HTTP::Delete,
+            uri_from_url(url),
+            headers,
+            options[:body]
+        )
+        do_request(request_info).to_hash
       end
 
       # http POST, pushes an update to an entry
       # @param [String] url - the url to visit
-      # @param [Hash] options - the options for the request.
+      # @param [hash] headers - the headers for the request.
+      # @param [Hash] options - the options of the request.
       # @return [Hash] a hash of the response
-      def post(url, options = {})
-        options = {http_class: Net::HTTP::Post, send: true}.merge options
-        options = request_core url, options
-        do_request(options).to_hash
+      def post(url, headers = {}, options = {})
+        request_info = RequestInfo.new(
+            Net::HTTP::Post,
+            uri_from_url(url),
+            send_headers(headers),
+            options[:body]
+        )
+        do_request(request_info).to_hash
       end
 
       # http PUT, pushes a new entry to the system
       # @param [String] url - the url to visit
-      # @param [Hash] options - the options for the request.
+      # @param [hash] headers - the headers for the request.
+      # @param [Hash] options - the options of the request.
       # @return [Hash] a hash of the response
-      def put(url, options = {})
-        options = {http_class: Net::HTTP::Put, send: true}.merge options
-        options = request_core url, options
-        do_request(options).to_hash
+      def put(url, headers = {}, options = {})
+        request_info = RequestInfo.new(
+            Net::HTTP::Put,
+            uri_from_url(url),
+            send_headers(headers),
+            options[:body]
+        )
+        do_request(request_info).to_hash
+      end
+
+      def send_headers(headers)
+        headers['if-match'] = '*' unless headers.has_key? 'if-match'
+        headers['content-type'] = 'application/atom+xml' unless headers.has_key? 'content-type'
+        headers
       end
 
       # generates the base request, including authorization, and content type info if PUT/POST.
-      # @param [Map] options - settings for the request
+      # @param [RequestInfo] request_info - settings for the request
       # @return [Net::Http] - a child of Net::Http matching the request method.
-      def base_request(options)
-        req = options[:http_class].new "#{options[:uri].path}?#{options[:uri].query}"
+      def base_request(request_info)
+        req = request_info.http_method.new "#{request_info.uri.path}?#{request_info.uri.query}"
         req.basic_auth Escenic::API::Config.user, Escenic::API::Config.pass
-        if options[:send]
-          req['If-Match']     = options[:ifmatch] ? options[:ifmatch] : '*'
-          req['Content-type'] = options[:type] ? options[:type] : 'application/atom+xml'
-        end
+        request_info.headers.each { |key, value|
+          req[key] = value
+        }
         req
       end
 
       # do_request performs the request, filters it through get_response to get the response
       # and then generates a result with get_result
-      # @param [Map] options - settings for the request
+      # @param [RequestInfo] request_info - settings for the request
       # @return [Net::HTTPResponse] response - response from server
-      def do_request(options)
-        options  = {raw: false}.merge options
+      def do_request(request_info)
         get_response do
-          Net::HTTP.start(options[:uri].host, options[:uri].port) do |http|
-            http.request(options[:req], options[:body])
+          Net::HTTP.start(request_info.uri.host, request_info.uri.port) do |http|
+            http.request(base_request(request_info), request_info.content)
           end
         end
       end

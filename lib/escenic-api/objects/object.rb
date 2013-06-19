@@ -11,11 +11,11 @@ module Escenic
 
       def self.for_id(id)
         raise 'id must not be nil' if id.nil?
-        content = call_client_method(:get, {id: id})
+        content = call_client_method(:get, {}, {id: id})
         self.new(content)
       end
 
-      def self.perform_create(payload_class, options)
+      def self.perform_create(payload_class, headers, options)
         verify_options(options) if self.respond_to? :verify_options
 
         section_id   = options.delete(:section_id)
@@ -23,17 +23,18 @@ module Escenic
         call_options[:id] = section_id if section_id
 
         options[:verb]      = :create
-        call_options[:body] = payload_class.new(options).xml
+        payload =  payload_class.new(options)
+        call_options[:body] = payload.body
 
-        response = call_client_method(:create, call_options)
+        response = call_client_method(:create, headers, call_options)
         id       = response.header['location'].split('/').last
         self.for_id(id)
       end
 
-      def perform_update(payload_class, object_class, options={})
+      def perform_update(payload_class, object_class, headers, options={})
         options  = options.merge({id: id, verb: :update})
         payload  = payload_class.new(options)
-        response = call_client_method(:update, {id: id, body: payload.xml})
+        response = call_client_method(:update, headers, {id: id, body: payload.body})
 
         if response.instance_of?(Net::HTTPNoContent)
           object_class.for_id(id)
@@ -52,11 +53,11 @@ module Escenic
         unless payload_class.nil?
           options  = {id: id, verb: :delete}
           payload  = payload_class.new(options)
-          call_options[:body] = payload.xml
+          call_options[:body] = payload.body
           client_method = :delete_confirm
         end
-
-        response = call_client_method(client_method, call_options)
+        headers = {}
+        response = call_client_method(client_method, headers, call_options)
 
         if response.instance_of?(expected_response)
           content.each_key do |k|
@@ -80,14 +81,14 @@ module Escenic
         "#{method_name}_#{class_name}"
       end
 
-      def call_client_method(method, options)
+      def call_client_method(method, headers, options)
         method = resolve_method(method)
-        Escenic::API::client.endpoints.send(method, options)
+        Escenic::API::client.endpoints.send(method, headers, options)
       end
 
-      def self.call_client_method(method, options)
+      def self.call_client_method(method, headers, options)
         method = self.resolve_method(method, self.name.split('::').last.downcase)
-        Escenic::API::client.endpoints.send(method, options)
+        Escenic::API::client.endpoints.send(method, headers, options)
       end
     end
 

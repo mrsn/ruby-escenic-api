@@ -3,7 +3,7 @@ module Escenic
 
     class Person < Escenic::API::Object
       def self.create(options={})
-        perform_create(Escenic::API::PersonPayload, options)
+        perform_create(Escenic::API::PersonPayload, {}, options)
       end
 
       def self.verify_options(options)
@@ -14,6 +14,7 @@ module Escenic
         perform_update(
             Escenic::API::PersonPayload,
             Escenic::API::Person,
+            {},
             options
         )
       end

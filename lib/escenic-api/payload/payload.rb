@@ -2,7 +2,7 @@ module Escenic
   module API
 
     class Payload
-      attr_reader :verb, :model_type, :xml, :endpoint, :publication, :base_model, :parent_id, :parent_title
+      attr_reader :verb, :model_type, :body, :endpoint, :publication, :base_model, :parent_id, :parent_title
 
       def initialize(options={})
         @endpoint     = Escenic::API::Config.endpoint
@@ -16,7 +16,7 @@ module Escenic
 
       def handle_verb(options)
         if self.respond_to? @verb
-          @xml = self.send(@verb, options)
+          @body = self.send(@verb, options)
           #if [:create, :update].include? @verb
           #  spec.validate xml
           #end
@@ -30,8 +30,14 @@ module Escenic
         namespaces = builder.collect_namespaces
         payload    = builder.xpath('//vdf:payload', namespaces)
 
+        prefixed = options.delete(:prefixed)
         options.each do |k, value|
-          name       = "com.escenic.#{k.to_s}"
+          if prefixed
+            name       = "com.escenic.#{k.to_s}"
+          else
+            name       = k.to_s
+          end
+
           attr_field = payload.xpath("//vdf:field[@name='#{name}']", namespaces)
           if attr_field.count > 0 && attr_field.children.count == 0 # field exists and is empty
             vdf_value = vdf_value(builder, value)
