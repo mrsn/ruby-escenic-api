@@ -17,7 +17,7 @@ module Escenic
       end
 
       def request(method, action, headers, options = {})
-        action.sub! ':id', options.delete(:id).to_s if action.match ':id'
+        action.sub! ':id', options[:id].to_s if action.match ':id'
 
         case options[:endpoint_type]
           when :binary

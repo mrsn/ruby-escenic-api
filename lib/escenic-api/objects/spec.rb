@@ -2,9 +2,8 @@ require_relative '../document/spec_document'
 
 module Escenic
   module API
-
     class Spec < Escenic::API::Object
-      attr_reader :fields, :spec_object
+      attr_reader :fields
 
       def initialize(xml)
         super(xml)

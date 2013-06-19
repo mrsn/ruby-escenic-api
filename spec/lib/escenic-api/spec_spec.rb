@@ -8,7 +8,7 @@ describe Escenic::API::Spec do
   end
   it 'returns validates a person payload' do
     spec = Escenic::API::Spec.for_id('com.escenic.person')
-    person_options = {verb: :create, 'firstName' => 'John', 'surName' => 'Doe'}
+    person_options = {verb: :create, fields: {'com.escenic.firstName' => 'John', 'com.escenic.surName' => 'Doe'}}
     payload = Escenic::API::PersonPayload.new(person_options)
     spec.validate(payload)
   end

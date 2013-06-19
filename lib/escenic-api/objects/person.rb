@@ -7,7 +7,8 @@ module Escenic
       end
 
       def self.verify_options(options)
-        raise Escenic::API::Error::Params.new 'surname is required to create a person.' if options[:surName].nil?
+        fields = options[:fields]
+        raise Escenic::API::Error::Params.new 'com.escenic.surName is required to create a person.' if fields['com.escenic.surName'].nil?
       end
 
       def update(options={})

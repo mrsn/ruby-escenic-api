@@ -12,7 +12,7 @@ module Escenic
       end
 
       def create(options={})
-        options = {vdf_field_prefix: 'com.escenic.'}.merge(options)
+        #options = {vdf_field_prefix: 'com.escenic.'}.merge(options)
         api_xml_base(options) { |xml|
           xml.link(
               rel:   'http://www.vizrt.com/types/relation/parent',
@@ -31,7 +31,7 @@ module Escenic
             xml.content(type: 'application/vnd.vizrt.payload+xml') {
               xml[:vdf].payload(
                   'xmlns:vdf' => 'http://www.vizrt.com/types',
-                  model:      endpoint + '/model/' + model_type + '.delete.' + options.delete(:id).to_s
+                  model:      endpoint + '/model/' + model_type + '.delete.' + options[:id].to_s
               ) {
                 xml[:vdf].field(name: 'com.escenic.section.delete.confirmation') {
                   xml[:vdf].value 'true'
@@ -44,7 +44,7 @@ module Escenic
       end
 
       def update(options={})
-        response  = Escenic::API::client.endpoints.get_section({}, id: options.delete(:id))
+        response  = Escenic::API::client.endpoints.get_section({}, id: options[:id])
         update_fields(response, options)
       end
 

@@ -7,7 +7,7 @@ module Escenic
     class Binary < Escenic::API::Object
       def self.create(options={})
         filename = options[:filename]
-        headers = options.delete(:headers) || {}
+        headers = options[:headers] || {}
         basename = filename.split('/').last
 
         options  = options.merge({verb: :create})

@@ -7,9 +7,12 @@ module Escenic
       end
 
       def self.verify_options(options)
-        raise Escenic::API::Error::Params.new 'sectionName, uniqueName, and directoryName required to create a section.' if options[:sectionName].nil? ||
-            options[:uniqueName].nil? ||
-            options[:directoryName].nil?
+        fields = options[:fields]
+        raise Escenic::API::Error::Params.new 'fields hash is missing completely in section call. Cannont continue.' if fields.nil?
+        raise Escenic::API::Error::Params.new 'com.escenic.sectionName, com.escenic.uniqueName, and com.escenic.directoryName required to create a section.' if
+          fields['com.escenic.sectionName'].nil? ||
+          fields['com.escenic.uniqueName'].nil? ||
+          fields['com.escenic.directoryName'].nil?
       end
 
       def update(options={})

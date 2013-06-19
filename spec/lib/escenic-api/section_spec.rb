@@ -6,9 +6,11 @@ describe Escenic::API::Section do
     @time       = Time.now.to_i
     @client     = Escenic::API::client
     @section_id = Escenic::API::Section.create(
-        sectionName:   "new section #{@time}",
-        uniqueName:    "new_section_#{@time}",
-        directoryName: "new_section_#{@time}"
+        fields: {
+            'com.escenic.sectionName'   => "new section #{@time}",
+            'com.escenic.uniqueName'    => "new_section_#{@time}",
+            'com.escenic.directoryName' => "new_section_#{@time}"
+        }
     ).id
   end
 
@@ -62,39 +64,50 @@ describe Escenic::API::Section do
 
   it 'returns true when a section is deleted' do
     section = Escenic::API::Section.create(
-        sectionName:   "delete section test #{@time}",
-        uniqueName:    "delete_section_test_#{@time}",
-        directoryName: "delete_section_test_#{@time}"
+        fields: {
+            'com.escenic.sectionName'   => "delete section test #{@time}",
+            'com.escenic.uniqueName'    => "delete_section_test#{@time}",
+            'com.escenic.directoryName' => "delete_section_test#{@time}"
+        }
     )
     section.delete?.should equal(true)
   end
 
   it 'returns a Escenic::API::Section if given a name, unique_name, directory parameter' do
     section = Escenic::API::Section.create(
-        sectionName:   "create section #{@time}",
-        uniqueName:    "create_section_#{@time}",
-        directoryName: "create_section_#{@time}"
+        fields: {
+            'com.escenic.sectionName'   => "create section test#{@time}",
+            'com.escenic.uniqueName'    => "create_section_test#{@time}",
+            'com.escenic.directoryName' => "create_section_test#{@time}"
+        }
     )
     section.should be_an_instance_of(Escenic::API::Section)
   end
 
   it 'returns Escenic::API::Section when a section is updated' do
     section = Escenic::API::Section.create(
-        sectionName:   "update section test #{@time}",
-        uniqueName:    "update_section_test_#{@time}",
-        directoryName: "update_section_test_#{@time}"
+        fields: {
+            'com.escenic.sectionName'   => "update section test #{@time}",
+            'com.escenic.uniqueName'    => "update_section_test#{@time}",
+            'com.escenic.directoryName' => "update_section_test#{@time}"
+        }
     )
     section.update('sectionName' => "this name changed #{@time}").should be_an_instance_of(Escenic::API::Section)
   end
 
   it 'returns true when a section is updated with a new field' do
     section = Escenic::API::Section.create(
-        sectionName:   "new field test #{@time}",
-        uniqueName:    "new_field_test_#{@time}",
-        directoryName: "new_field_test_#{@time}"
+        fields: {
+            'com.escenic.sectionName'     => "new field test #{@time}",
+            'com.escenic.uniqueName'    => "new_field_test#{@time}",
+            'com.escenic.directoryName' => "new_field_test#{@time}"
+        }
+
     )
     section.update(
-        new_field: "agreement info #{@time}",
+        fields: {
+            new_field: "agreement info #{@time}",
+        }
     ).should be_an_instance_of(Escenic::API::Section)
   end
 

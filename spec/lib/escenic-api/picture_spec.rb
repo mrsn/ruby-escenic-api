@@ -7,9 +7,11 @@ describe Escenic::API::Picture do
     @time       = Time.now.to_i
     @client     = Escenic::API::client
     @section_id = Escenic::API::Section.create(
-        sectionName:   "new section #{@time}",
-        uniqueName:    "new_section_#{@time}",
-        directoryName: "new_section_#{@time}"
+        fields: {
+            'com.escenic.sectionName'   => "new section #{@time}",
+            'com.escenic.uniqueName'    => "new_section_#{@time}",
+            'com.escenic.directoryName' => "new_section_#{@time}"
+        }
     ).id
   end
 
@@ -29,7 +31,7 @@ describe Escenic::API::Picture do
         filename: 'spec/images/test.jpg',
     )
     picture.should be_an_instance_of(Escenic::API::Picture)
-    picture = picture.update({caption: 'a new caption'})
+    picture = picture.update(fields: {caption: 'a new caption'})
 
     fields = picture.content.entry.content.payload.field
     pass   = false

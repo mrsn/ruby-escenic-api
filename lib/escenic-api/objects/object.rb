@@ -18,9 +18,8 @@ module Escenic
       def self.perform_create(payload_class, headers, options)
         verify_options(options) if self.respond_to? :verify_options
 
-        section_id   = options.delete(:section_id)
         call_options = {}
-        call_options[:id] = section_id if section_id
+        call_options[:id] = options[:section_id] if options[:section_id]
 
         options[:verb]      = :create
         payload =  payload_class.new(options)
