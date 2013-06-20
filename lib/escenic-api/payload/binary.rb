@@ -13,7 +13,6 @@ module Escenic
         load_file(options[:filename])
       end
 
-
       def update(options={})
         load_file(options[:filename])
       end

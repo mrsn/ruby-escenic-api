@@ -7,16 +7,19 @@ module Escenic
     class Binary < Escenic::API::Object
       def self.create(options={})
         filename = options[:filename]
-        headers = options[:headers] || {}
+        headers  = options[:headers] || {}
         basename = filename.split('/').last
 
-        options  = options.merge({verb: :create})
-        payload  = Escenic::API::BinaryPayload.new(options)
-
+        options = options.merge({verb: :create})
+        payload = Escenic::API::BinaryPayload.new(options)
 
         headers['x-escenic-media-filename'] = basename
-        headers['content-type'] = MIME::Types.type_for(filename).first
-        options = {body: payload.body, endpoint_type: :binary}.merge(options)
+        headers['content-type']             = MIME::Types.type_for(filename).first.to_s
+        options                             = {
+            body:          payload.body,
+            endpoint_type: :binary,
+        }.merge(options)
+
         response = call_client_method(:create, headers, options)
 
         if response.instance_of?(Net::HTTPCreated)

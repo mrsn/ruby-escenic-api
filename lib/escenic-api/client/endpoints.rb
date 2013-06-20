@@ -21,6 +21,7 @@ module Escenic
 
         case options[:endpoint_type]
           when :binary
+            action.sub! ':type', options[:type].to_s if action.match ':type'
             url = Escenic::API::Config.endpoint_binary + action
           else
             url = Escenic::API::Config.endpoint + action
@@ -57,14 +58,7 @@ module Escenic
       add_method :get,      '/model/:id',                 as: 'get_spec'
 
       # binary
-      add_method :post,     '/binary/:id',                as: 'create_binary' # id means object type, e.g. picture
-
-      # picture
-      # binary sub-types don't have post, it's handled by the binary upload endpoint.
-      add_method :get,      '/content/:id',               as: 'get_picture'
-      add_method :put,      '/content/:id',               as: 'update_picture'
-      add_method :delete,   '/content/:id',               as: 'delete_picture'
-
+      add_method :post,     '/:type',             as: 'create_binary' # type means object type, e.g. picture
     end
 
   end

@@ -58,6 +58,40 @@ describe Escenic::API::ContentItem do
     content_item.delete?.should equal(true)
   end
 
+  it 'returns an Escenic::API::ContentItem if given title and filename' do
+    picture = Escenic::API::ContentItem.create(
+        type: 'picture',
+        title:    'Create Content Item Spec Test',
+        filename: 'spec/images/test.jpg',
+    )
+    picture.should be_an_instance_of(Escenic::API::ContentItem)
+    picture.content.entry.title.should eq('test.jpg')
+  end
+
+  it 'returns an Escenic::API::ContentItem if given title and filename' do
+    picture = Escenic::API::ContentItem.create(
+        type: 'picture',
+        title:    'Create Content Item Spec Test',
+        filename: 'spec/images/test.jpg',
+    )
+    picture.should be_an_instance_of(Escenic::API::ContentItem)
+    picture = picture.update(fields: {caption: 'a new caption'})
+
+    fields = picture.content.entry.content.payload.field
+    pass   = false
+    fields.each do |field|
+      if field.length > 1
+        if field.attributes.name.include?('caption')
+          field.value.should eq('a new caption')
+          pass = true
+        end
+      end
+    end
+    fail "couldn't find field caption" if !pass
+
+  end
+
+
   after do
     Escenic::API::Section.for_id(@section_id).delete?
   end
