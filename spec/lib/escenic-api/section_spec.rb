@@ -82,6 +82,7 @@ describe Escenic::API::Section do
         }
     )
     section.should be_an_instance_of(Escenic::API::Section)
+    section.delete?
   end
 
   it 'returns Escenic::API::Section when a section is updated' do
@@ -93,6 +94,7 @@ describe Escenic::API::Section do
         }
     )
     section.update('sectionName' => "this name changed #{@time}").should be_an_instance_of(Escenic::API::Section)
+    section.delete?
   end
 
   it 'returns true when a section is updated with a new field' do
@@ -104,11 +106,13 @@ describe Escenic::API::Section do
         }
 
     )
-    section.update(
+    section = section.update(
         fields: {
             new_field: "agreement info #{@time}",
         }
-    ).should be_an_instance_of(Escenic::API::Section)
+    )
+    section.should be_an_instance_of(Escenic::API::Section)
+    section.delete?
   end
 
   after do
